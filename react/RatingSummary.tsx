@@ -1,19 +1,31 @@
 import React, {
-  useContext,
   FunctionComponent,
+  useContext,
   useState,
   useEffect,
 } from 'react'
-import { ProductSummaryContext } from 'vtex.product-summary'
+import { ProductContext } from 'vtex.product-context'
 import queryRatingSummary from './graphql/queries/queryRatingSummary.gql'
 import { withApollo } from 'react-apollo'
 
-const RatingInline: FunctionComponent<RatingInlineProps> = props => {
-  const { product } = useContext(ProductSummaryContext)
+const Reviews: FunctionComponent<ReviewProps> = props => {
+  const { product } = useContext(ProductContext)
 
-  const [count, setCount] = useState(0)
   const [reviews, setReviews] = useState([])
   const [average, setAverage] = useState(0)
+  const [histogram, setHistogram] = useState([])
+  const [count, setCount] = useState(0)
+  const [percentage, setPercentage] = useState([])
+  const [selected, setSelected] = useState('Newest')
+  const [paging, setPaging] = useState({})
+  const [detailsIsOpen, setDetailsIsOpen] = useState(false)
+  const [alreadyReviews, setAlreadyReviews] = useState(false)
+
+  useEffect(() => {
+    if (product) {
+      getReviews('Newest', 0)
+    }
+  }, [product])
 
   const getReviews = (orderBy: any, page: any) => {
     props.client
@@ -27,32 +39,38 @@ const RatingInline: FunctionComponent<RatingInlineProps> = props => {
             productId: product.productId,
             productReference: product.productReference,
           }),
+          filter: 0,
         },
       })
       .then((response: any) => {
-        const results = response.data.productReviews.results
+        console.log('RESPONSE: ', response)
+        let reviews = response.data.productReviews.results[0].reviews // revisar se sempre vem 1 item nesse array
+        let rollup = response.data.productReviews.results[0].rollup
+        let paging = response.data.productReviews.paging
 
-        if (results.length) {
-          let reviews = results[0].reviews
-          let rollup = results[0].rollup
+        setReviews(reviews)
+        setAverage(rollup != null ? rollup.average_rating : 0)
+        setHistogram(rollup != null ? rollup.rating_histogram : [])
+        setCount(rollup != null ? rollup.review_count : 0)
+        setPaging(paging)
+        setAlreadyReviews(reviews.length ? true : false)
+        // this.setState({
+        //   reviews: reviews,
+        //   average: (rollup != null) ? rollup.average_rating : 0,
+        //   histogram: (rollup != null) ? rollup.rating_histogram : [],
+        //   count: (rollup != null) ? rollup.review_count : 0,
+        //   paging: paging,
+        //   alreadyReviews: reviews.length ? true : false
+        // });
 
-          setReviews(reviews)
-          setAverage(rollup != null ? rollup.average_rating : 0)
-        }
-
-        setCount(count + 1)
+        //this.calculatePercentage();
+      })
+      .catch((error: any) => {
+        console.log('ERROR: ', error)
       })
   }
 
-  useEffect(() => {
-    if (product) {
-      if (count == 0) {
-        getReviews('Newest', 0)
-      }
-    }
-  }, [product])
-
-  return reviews.length ? (
+  return alreadyReviews ? (
     <div className="review__rating mw8 center ph5">
       <div className="review__rating--stars dib relative v-mid mr2">
         <div className="review__rating--inactive nowrap">
@@ -94,6 +112,8 @@ const RatingInline: FunctionComponent<RatingInlineProps> = props => {
           style={{ width: average * 20 + '%' }}
         >
           {[0, 1, 2, 3, 4].map((_, i) => {
+            // let { average } = this.state;
+
             return i <= 3 ? (
               <svg
                 className="mr2"
@@ -127,6 +147,9 @@ const RatingInline: FunctionComponent<RatingInlineProps> = props => {
           })}
         </div>
       </div>
+      <span className="review__rating--average dib v-mid">
+        {average.toFixed(1)}
+      </span>
     </div>
   ) : (
     <div className="review__rating mw8 center ph5">
@@ -151,13 +174,13 @@ const RatingInline: FunctionComponent<RatingInlineProps> = props => {
           })}
         </div>
       </div>
+      <span className="review__rating--average dib v-mid">0</span>
     </div>
   )
 }
 
-interface RatingInlineProps {
-  productQuery: any
+interface ReviewProps {
   client: any
 }
 
-export default withApollo(RatingInline)
+export default withApollo(Reviews)
