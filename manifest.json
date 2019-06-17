@@ -1,0 +1,81 @@
+{
+  "vendor": "vtex",
+  "name": "io-reviews",
+  "version": "1.0.0",
+  "defaultLocale": "pt-BR",
+  "builders": {
+    "react": "3.x",
+    "graphql": "1.x",
+    "node": "4.x",
+    "messages": "1.x",
+    "store": "0.x"
+  },
+  "credentialType": "absolute",
+  "policies": [
+    {
+      "name": "vbase-read-write"
+    },
+    {
+      "name": "outbound-access",
+      "attrs": {
+        "host": "display.powerreviews.com",
+        "path": "/*"
+      }
+    },
+    {
+      "name": "outbound-access",
+      "attrs": {
+        "host": "myvtex.com",
+        "path": "/_v/graphql/private/v1"
+      }
+    }
+  ],
+  "mustUpdateAt": "2020-01-22",
+  "categories": [],
+  "registries": [
+    "smartcheckout"
+  ],
+  "scripts": {
+    "postreleasy": "bash publish.sh"
+  },
+  "settingsSchema": {
+    "title": "IO Reviews",
+    "type": "object",
+    "properties": {
+      "appKey": {
+        "type": "string",
+        "title": "App Key",
+        "description": "Your App Key"
+      },
+      "merchantId": {
+        "type": "string",
+        "title": "Merchant Id",
+        "description": "Enter your Merchant Id"
+      },
+      "merchantGroupId": {
+        "type": "string",
+        "title": "Merchant Group Id",
+        "description": "Enter your Merchant Group Id"
+      },
+      "uniqueId": {
+        "type": "string",
+        "enum": [
+          "productId",
+          "linkText",
+          "productReference"
+        ],
+        "default": "linkText",
+        "title": "API Unique Id",
+        "description": "The Unique Id referencing to the product id to get the reviews"
+      }
+    }
+  },
+  "dependencies": {
+    "vtex.styleguide": "9.x",
+    "vtex.product-review-interfaces": "1.x",
+    "vtex.product-summary": "2.x",
+    "vtex.store-header": "2.x",
+    "vtex.store": "2.x"
+  },
+  "$schema": "https://raw.githubusercontent.com/vtex/node-vtex-api/master/gen/manifest.schema"
+}

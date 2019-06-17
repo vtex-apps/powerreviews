@@ -1,0 +1,14 @@
+{
+  "product-review-form.power-reviews": {
+    "component": "ReviewForm"
+  },
+  "product-reviews.power-reviews": {
+    "component": "Reviews"
+  },
+  "product-rating-summary.power-reviews": {
+    "component": "RatingSummary"
+  },
+  "product-rating-inline.power-reviews": {
+    "component": "RatingInline"
+  }
+}

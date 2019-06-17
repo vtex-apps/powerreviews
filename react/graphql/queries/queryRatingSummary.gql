@@ -1,0 +1,60 @@
+query productReviews($sort: String!, $filter: Int, $page: Int, $pageId: String) {
+	productReviews(sort: $sort, page: $page, pageId: $pageId, filter: $filter) {
+    name
+    paging {
+      current_page_number
+      page_size
+      pages_total
+      total_results
+    }
+    results{
+      page_id
+      reviews{
+        badges {
+          is_staff_reviewer
+          is_verified_buyer
+          is_verified_reviewer
+        }
+        details{
+          comments
+          created_date
+          gtin
+          headline
+          location
+          nickname
+          product_page_id
+          upc
+          updated_date
+          bottom_line
+          properties {
+            key
+            label
+            type
+            value
+          }
+        }
+        internal_review_id
+				metrics{
+        	helpful_score
+          helpful_votes
+          not_helpful_votes
+          rating
+        }
+        media{
+          id
+          uri
+          helpful_votes
+          not_helpful_votes
+          type
+        }
+        review_id
+      }
+      rollup {
+        average_rating
+        name
+        rating_histogram
+        review_count
+      }
+    }
+  }
+}
