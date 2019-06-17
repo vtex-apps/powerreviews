@@ -27,6 +27,7 @@ $RECYCLE.BIN/
 
 # App specific
 node_modules/
+.vscode
 docs/_book/
 .tmp
 .idea
