@@ -51,7 +51,7 @@ export const queries = {
     },
     getConfig: async (_:any, __:any, ctx:any) => {
         const apps = new Apps(ctx.vtex)
-        const app = "codeby.io-reviews"
+        const app = "vtex.io-reviews"
         const settings = await apps.getAppSettings(app)
         console.log("SETTINGS ", settings)
         return settings
