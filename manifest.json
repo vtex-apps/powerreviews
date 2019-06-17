@@ -1,6 +1,6 @@
 {
   "vendor": "vtex",
-  "name": "io-reviews",
+  "name": "powerreviews",
   "version": "1.0.0",
   "defaultLocale": "pt-BR",
   "builders": {
@@ -39,7 +39,7 @@
     "postreleasy": "bash publish.sh"
   },
   "settingsSchema": {
-    "title": "IO Reviews",
+    "title": "PowerReviews",
     "type": "object",
     "properties": {
       "appKey": {

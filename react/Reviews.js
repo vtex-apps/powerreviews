@@ -1,10 +1,10 @@
-import React, { Component } from "react";
-import queryRatingSummary from "./graphql/queries/queryRatingSummary.gql";
-import voteReviewQuery from "./graphql/mutations/voteReview.gql";
+import React, { Component } from "react"
+import queryRatingSummary from "./graphql/queries/queryRatingSummary.gql"
+import voteReviewQuery from "./graphql/mutations/voteReview.gql"
 import getConfig from "./graphql/getConfig.graphql"
-import { withApollo, graphql } from "react-apollo";
-import { useRuntime } from "vtex.render-runtime";
-import { Spinner, IconSuccess, Pagination, Collapsible, Dropdown, Button  } from 'vtex.styleguide';
+import { withApollo, graphql } from "react-apollo"
+import { useRuntime } from "vtex.render-runtime"
+import { Spinner, IconSuccess, Pagination, Collapsible, Dropdown, Button  } from 'vtex.styleguide'
 
 let hasUpdated = false
 
@@ -86,10 +86,6 @@ class productReviews extends Component {
 
     this.setState({ percentage: arr });
 
-  }
-
-  componentDidMount() {
-    //this.getReviews("Newest");
   }
 
   componentDidUpdate() {
