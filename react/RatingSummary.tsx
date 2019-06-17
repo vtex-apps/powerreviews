@@ -11,64 +11,53 @@ import { withApollo } from 'react-apollo'
 const Reviews: FunctionComponent<ReviewProps> = props => {
   const { product } = useContext(ProductContext)
 
-  const [reviews, setReviews] = useState([])
+  const [, setReviews] = useState([])
   const [average, setAverage] = useState(0)
-  const [histogram, setHistogram] = useState([])
-  const [count, setCount] = useState(0)
-  const [percentage, setPercentage] = useState([])
-  const [selected, setSelected] = useState('Newest')
-  const [paging, setPaging] = useState({})
-  const [detailsIsOpen, setDetailsIsOpen] = useState(false)
+  const [, setHistogram] = useState([])
+  const [, setCount] = useState(0)
+  const [, setPaging] = useState({})
   const [alreadyReviews, setAlreadyReviews] = useState(false)
 
   useEffect(() => {
-    if (product) {
-      getReviews('Newest', 0)
+    if (!product) {
+      return
     }
-  }, [product])
 
-  const getReviews = (orderBy: any, page: any) => {
-    props.client
-      .query({
-        query: queryRatingSummary,
-        variables: {
-          sort: orderBy,
-          page: page || 0,
-          pageId: JSON.stringify({
-            linkText: product.linkText,
-            productId: product.productId,
-            productReference: product.productReference,
-          }),
-          filter: 0,
-        },
-      })
-      .then((response: any) => {
-        console.log('RESPONSE: ', response)
-        let reviews = response.data.productReviews.results[0].reviews // revisar se sempre vem 1 item nesse array
-        let rollup = response.data.productReviews.results[0].rollup
-        let paging = response.data.productReviews.paging
+    const getReviews = (orderBy: any, page: any) => {
+      props.client
+        .query({
+          query: queryRatingSummary,
+          variables: {
+            sort: orderBy,
+            page: page || 0,
+            pageId: JSON.stringify({
+              linkText: product.linkText,
+              productId: product.productId,
+              productReference: product.productReference,
+            }),
+            filter: 0,
+          },
+        })
+        .then((response: any) => {
+          console.log('RESPONSE: ', response)
+          let reviews = response.data.productReviews.results[0].reviews // revisar se sempre vem 1 item nesse array
+          let rollup = response.data.productReviews.results[0].rollup
+          let paging = response.data.productReviews.paging
 
-        setReviews(reviews)
-        setAverage(rollup != null ? rollup.average_rating : 0)
-        setHistogram(rollup != null ? rollup.rating_histogram : [])
-        setCount(rollup != null ? rollup.review_count : 0)
-        setPaging(paging)
-        setAlreadyReviews(reviews.length ? true : false)
-        // this.setState({
-        //   reviews: reviews,
-        //   average: (rollup != null) ? rollup.average_rating : 0,
-        //   histogram: (rollup != null) ? rollup.rating_histogram : [],
-        //   count: (rollup != null) ? rollup.review_count : 0,
-        //   paging: paging,
-        //   alreadyReviews: reviews.length ? true : false
-        // });
+          setReviews(reviews)
+          setAverage(rollup != null ? rollup.average_rating : 0)
+          setHistogram(rollup != null ? rollup.rating_histogram : [])
+          setCount(rollup != null ? rollup.review_count : 0)
+          setPaging(paging)
+          setAlreadyReviews(reviews.length ? true : false)
+        })
+        .catch((error: any) => {
+          console.log('ERROR: ', error)
+        })
+    }
 
-        //this.calculatePercentage();
-      })
-      .catch((error: any) => {
-        console.log('ERROR: ', error)
-      })
-  }
+    getReviews('Newest', 0)
+  }, [product, props.client])
 
   return alreadyReviews ? (
     <div className="review__rating mw8 center ph5">
