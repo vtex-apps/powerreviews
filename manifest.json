@@ -32,11 +32,9 @@
   ],
   "mustUpdateAt": "2020-01-22",
   "categories": [],
-  "registries": [
-    "smartcheckout"
-  ],
+  "registries": ["smartcheckout"],
   "scripts": {
-    "postreleasy": "bash publish.sh"
+    "postreleasy": "vtex publish --verbose"
   },
   "settingsSchema": {
     "title": "PowerReviews",
@@ -59,11 +57,7 @@
       },
       "uniqueId": {
         "type": "string",
-        "enum": [
-          "productId",
-          "linkText",
-          "productReference"
-        ],
+        "enum": ["productId", "linkText", "productReference"],
         "default": "linkText",
         "title": "API Unique Id",
         "description": "The Unique Id referencing to the product id to get the reviews"
