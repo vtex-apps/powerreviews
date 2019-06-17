@@ -1,0 +1,76 @@
+type Review {
+  name: String
+  paging: Paging
+  results: [Results]
+}
+
+type Paging {
+  current_page_number: Int
+  page_size: Int
+  pages_total: Int
+  total_results: Int
+}
+
+type Results {
+  page_id: String
+  reviews: [Reviews]
+  rollup: Rollup
+}
+
+type Reviews {
+  badges: Badges
+  details: Details
+  internal_review_id: Int
+  metrics: Metrics
+  media: [Media]
+  review_id: Int
+}
+
+type Rollup {
+  average_rating: Float
+  name: String
+  rating_histogram: [Int]
+  review_count: Int
+}
+
+type Badges {
+  is_staff_reviewer: Boolean
+  is_verified_buyer: Boolean
+  is_verified_reviewer: Boolean
+}
+
+type Details {
+  comments: String
+  created_date: ID
+  gtin: String
+  headline: String
+  location: String
+  nickname: String
+  product_page_id: String
+  upc: String
+  updated_date: ID,
+  properties: [Properties],
+  bottom_line: String
+}
+
+type Metrics {
+  helpful_score: Int
+  helpful_votes: Int
+  not_helpful_votes: Int
+  rating: Int
+}
+
+type Properties {
+  key: String
+  label: String
+  type: String
+  value: [String]
+}
+
+type Media {
+  id: String
+  uri: String
+  helpful_votes: Int
+  not_helpful_votes: Int
+  type: String
+}
