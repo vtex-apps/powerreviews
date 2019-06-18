@@ -3,7 +3,7 @@
   "name": "powerreviews",
   "title": "PowerReviews",
   "description": "The most advanced collection and custom display capabilities delivering relevant and authentic shopping experiences across touch points and channels. More reviews. More trust. More sales.",
-  "version": "1.0.2",
+  "version": "1.0.3",
   "defaultLocale": "pt-BR",
   "builders": {
     "react": "3.x",
@@ -34,7 +34,9 @@
   ],
   "mustUpdateAt": "2020-01-22",
   "categories": [],
-  "registries": ["smartcheckout"],
+  "registries": [
+    "smartcheckout"
+  ],
   "scripts": {
     "postreleasy": "vtex publish --verbose"
   },
@@ -59,7 +61,11 @@
       },
       "uniqueId": {
         "type": "string",
-        "enum": ["productId", "linkText", "productReference"],
+        "enum": [
+          "productId",
+          "linkText",
+          "productReference"
+        ],
         "default": "linkText",
         "title": "API Unique Id",
         "description": "The Unique Id referencing to the product id to get the reviews"
