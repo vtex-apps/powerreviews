@@ -6,16 +6,21 @@ import React, {
 } from 'react'
 import { ProductContext } from 'vtex.product-context'
 import queryRatingSummary from './graphql/queries/queryRatingSummary.gql'
-import { withApollo } from 'react-apollo'
+import getConfig from './graphql/getConfig.graphql'
+import { withApollo, graphql, ChildProps } from 'react-apollo'
 
-const Reviews: FunctionComponent<ReviewProps> = props => {
+interface Settings {
+  appKey: string,
+  uniqueId: string,
+  merchantId: string,
+  merchantGroupId: string
+}
+const withSettings = graphql<{client: any}, Settings>(getConfig, { options: () => ({ ssr: false }) })
+
+const Reviews: FunctionComponent<ChildProps<Partial<ReviewProps>, Settings>> = props => {
   const { product } = useContext(ProductContext)
 
-  const [, setReviews] = useState([])
   const [average, setAverage] = useState(0)
-  const [, setHistogram] = useState([])
-  const [, setCount] = useState(0)
-  const [, setPaging] = useState({})
   const [alreadyReviews, setAlreadyReviews] = useState(false)
 
   useEffect(() => {
@@ -42,13 +47,8 @@ const Reviews: FunctionComponent<ReviewProps> = props => {
           console.log('RESPONSE: ', response)
           let reviews = response.data.productReviews.results[0].reviews // revisar se sempre vem 1 item nesse array
           let rollup = response.data.productReviews.results[0].rollup
-          let paging = response.data.productReviews.paging
 
-          setReviews(reviews)
           setAverage(rollup != null ? rollup.average_rating : 0)
-          setHistogram(rollup != null ? rollup.rating_histogram : [])
-          setCount(rollup != null ? rollup.review_count : 0)
-          setPaging(paging)
           setAlreadyReviews(reviews.length ? true : false)
         })
         .catch((error: any) => {
@@ -60,7 +60,7 @@ const Reviews: FunctionComponent<ReviewProps> = props => {
   }, [product, props.client])
 
   return alreadyReviews ? (
-    <div className="review__rating mw8 center ph5">
+    <div className="review__rating mw8 center mb5">
       <div className="review__rating--stars dib relative v-mid mr2">
         <div className="review__rating--inactive nowrap">
           {[0, 1, 2, 3, 4].map((_, i) => {
@@ -101,7 +101,7 @@ const Reviews: FunctionComponent<ReviewProps> = props => {
           style={{ width: average * 20 + '%' }}
         >
           {[0, 1, 2, 3, 4].map((_, i) => {
-            // let { average } = this.state;
+            // let { average } = state;
 
             return i <= 3 ? (
               <svg
@@ -136,12 +136,30 @@ const Reviews: FunctionComponent<ReviewProps> = props => {
           })}
         </div>
       </div>
-      <span className="review__rating--average dib v-mid">
-        {average.toFixed(1)}
+      <span className="review__rating--average dib v-mid gray f6">
+        ({average.toFixed(1)})
       </span>
+      {!props.data.loading ? (
+        <a
+          className='ml5 black-80 dib f6'
+          href={`/new-review?pr_page_id=${
+            product[
+              props.data.getConfig.uniqueId
+            ]
+          }&pr_merchant_id=${
+            props.data.getConfig.merchantId
+          }&pr_api_key=${
+            props.data.getConfig.appKey
+          }&pr_merchant_group_id=${
+            props.data.getConfig.merchantGroupId
+          }`}
+        >
+          Write a review
+        </a>
+      ) : null}
     </div>
   ) : (
-    <div className="review__rating mw8 center ph5">
+    <div className="review__rating mw8 center mb5">
       <div className="review__rating--stars dib relative v-mid mr2">
         <div className="review__rating--inactive nowrap">
           {[0, 1, 2, 3, 4].map((_, i) => {
@@ -163,13 +181,32 @@ const Reviews: FunctionComponent<ReviewProps> = props => {
           })}
         </div>
       </div>
-      <span className="review__rating--average dib v-mid">0</span>
+      <span className="review__rating--average dib v-mid gray f6">(0)</span>
+      {!props.data.loading ? (
+        <a
+          className='ml5 black-80 dib f6'
+          href={`/new-review?pr_page_id=${
+            product[
+              props.data.getConfig.uniqueId
+            ]
+          }&pr_merchant_id=${
+            props.data.getConfig.merchantId
+          }&pr_api_key=${
+            props.data.getConfig.appKey
+          }&pr_merchant_group_id=${
+            props.data.getConfig.merchantGroupId
+          }`}
+        >
+          Write a review
+        </a>
+      ) : null}
     </div>
   )
 }
 
 interface ReviewProps {
-  client: any
+  client: any,
+  data: any
 }
 
-export default withApollo(Reviews)
+export default withApollo(withSettings(Reviews))

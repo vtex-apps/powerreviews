@@ -585,8 +585,7 @@ class Reviews extends Component {
                     this.props.data.getConfig.merchantGroupId
                   }`}
                 >
-                  {' '}
-                  Write a review{' '}
+                  Write a review
                 </a>
               ) : null}
             </div>
