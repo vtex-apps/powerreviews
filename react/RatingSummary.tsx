@@ -8,6 +8,7 @@ import { ProductContext } from 'vtex.product-context'
 import queryRatingSummary from './graphql/queries/queryRatingSummary.gql'
 import getConfig from './graphql/getConfig.graphql'
 import { withApollo, graphql, ChildProps } from 'react-apollo'
+import { Link } from 'vtex.render-runtime'
 
 interface Settings {
   appKey: string,
@@ -136,13 +137,13 @@ const Reviews: FunctionComponent<ChildProps<Partial<ReviewProps>, Settings>> = p
           })}
         </div>
       </div>
-      <span className="review__rating--average dib v-mid gray f6">
+      <span className="review__rating--average dib v-mid c-muted-2 f6">
         ({average.toFixed(1)})
       </span>
       {!props.data.loading ? (
-        <a
-          className='ml5 black-80 dib f6'
-          href={`/new-review?pr_page_id=${
+        <Link
+          className='ml5 c-on-base dib f6'
+          to={`/new-review?pr_page_id=${
             product[
               props.data.getConfig.uniqueId
             ]
@@ -155,7 +156,7 @@ const Reviews: FunctionComponent<ChildProps<Partial<ReviewProps>, Settings>> = p
           }`}
         >
           Write a review
-        </a>
+        </Link>
       ) : null}
     </div>
   ) : (
@@ -181,11 +182,11 @@ const Reviews: FunctionComponent<ChildProps<Partial<ReviewProps>, Settings>> = p
           })}
         </div>
       </div>
-      <span className="review__rating--average dib v-mid gray f6">(0)</span>
+      <span className="review__rating--average dib v-mid c-muted-2 f6">(0)</span>
       {!props.data.loading ? (
-        <a
-          className='ml5 black-80 dib f6'
-          href={`/new-review?pr_page_id=${
+        <Link
+          className='ml5 c-on-base dib f6'
+          to={`/new-review?pr_page_id=${
             product[
               props.data.getConfig.uniqueId
             ]
@@ -198,7 +199,7 @@ const Reviews: FunctionComponent<ChildProps<Partial<ReviewProps>, Settings>> = p
           }`}
         >
           Write a review
-        </a>
+        </Link>
       ) : null}
     </div>
   )
