@@ -1,13 +1,12 @@
-import React, { FunctionComponent, useEffect, useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import { useRuntime } from 'vtex.render-runtime'
 import getConfig from './graphql/getConfig.graphql'
-import { graphql, compose, Query } from 'react-apollo'
+import { graphql } from 'react-apollo'
 
 const ReviewForm = props => {
   const {
     culture: { locale },
     query,
-    getSettings,
   } = useRuntime()
   const [loaded, setLoaded] = useState(false)
   const [pageId, setPageId] = useState(null)

@@ -137,17 +137,25 @@ class Reviews extends Component {
       })
   }
 
-  sort = (event, value) => {
+  handleSort = (event, value) => {
     this.setState({ selected: value })
     this.getReviews(value)
   }
 
-  filter = (event, value) => {
+  handleFilter = (event, value) => {
     const currentSort = this.state.selected
     const currentPage = 0
 
     this.setState({ filter: value })
     this.getReviews(currentSort, currentPage, value)
+  }
+
+  handleClickNext = () => {
+    this.goToPage(this.state.paging.current_page_number * 10)
+  }
+
+  handleClickPrevious = () => {
+    this.goToPage((this.state.paging.current_page_number - 2) * 10)
   }
 
   getTimeAgo = time => {
@@ -193,6 +201,7 @@ class Reviews extends Component {
         },
       })
       .then(response => {
+        // eslint-disable-next-line no-console
         console.log('response goToPage', response)
         let reviews = response.data.productReviews.results[0].reviews // revisar se sempre vem 1 item nesse array
         // let rollup = response.data.productReviews.results[0].rollup;
@@ -212,6 +221,7 @@ class Reviews extends Component {
         variables: { reviewId: reviewId, voteType: voteType },
       })
       .then(response => {
+        // eslint-disable-next-line no-console
         console.log(response)
 
         const types = {
@@ -344,7 +354,7 @@ class Reviews extends Component {
             <div className="mb7">
               <Dropdown
                 options={this.state.options}
-                onChange={this.sort}
+                onChange={this.handleSort}
                 value={this.state.selected}
                 {...this.props}
               />
@@ -352,7 +362,7 @@ class Reviews extends Component {
             <div className="mb7">
               <Dropdown
                 options={this.state.filters}
-                onChange={this.filter}
+                onChange={this.handleFilter}
                 value={this.state.filter}
                 {...this.props}
               />
@@ -503,10 +513,11 @@ class Reviews extends Component {
                     {review.media.map((item, i) => {
                       return (
                         <img
+                          alt=""
                           className="w-20 db mb5"
                           key={i}
                           src={item.uri}
-                        ></img>
+                        />
                       )
                     })}
                   </div>
@@ -528,14 +539,8 @@ class Reviews extends Component {
             }
             textOf="of"
             totalItems={this.state.paging.total_results}
-            onNextClick={this.goToPage.bind(
-              this,
-              this.state.paging.current_page_number * 10
-            )}
-            onPrevClick={this.goToPage.bind(
-              this,
-              (this.state.paging.current_page_number - 2) * 10
-            )}
+            onNextClick={this.handleClickNext}
+            onPrevClick={this.handleClickPrevious}
           />
         </div>
       </div>
@@ -551,7 +556,7 @@ class Reviews extends Component {
             <div className="mb7">
               <Dropdown
                 options={this.state.options}
-                onChange={this.sort}
+                onChange={this.handleSort}
                 value={this.state.selected}
                 {...this.props}
               />
@@ -559,7 +564,7 @@ class Reviews extends Component {
             <div className="mb7">
               <Dropdown
                 options={this.state.filters}
-                onChange={this.filter}
+                onChange={this.handleFilter}
                 value={this.state.filter}
                 {...this.props}
               />
