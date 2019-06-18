@@ -27,27 +27,35 @@ const ReviewForm = props => {
       script.src = 'https://ui.powerreviews.com/stable/4.0/ui.js'
       document.body.appendChild(script)
     }
-  }, [props.data.loading])
+  }, [
+    props.data.getConfig.appKey,
+    props.data.getConfig.merchantId,
+    props.data.loading,
+    query.pr_merchant_group_id,
+    query.pr_page_id,
+  ])
 
   useEffect(() => {
     if (!window.POWERREVIEWS && appKey === null) {
+      // eslint-disable-next-line no-console
       console.log('POWERREVIEWS NO')
     } else {
+      // eslint-disable-next-line no-console
       console.log('POWERREVIEWS SIM')
 
+      /* eslint-disable @typescript-eslint/camelcase */
       window.POWERREVIEWS.display.render({
         api_key: appKey,
         locale: locale,
         merchant_group_id: merchantGroupId,
         merchant_id: merchantId,
         page_id: pageId,
-        // page_id_variant: PAGE_ID_VARIANT, //only required if specifying a Page ID variant
         components: {
           Write: 'pr-write',
         },
       })
     }
-  }, [loaded])
+  }, [appKey, loaded, locale, merchantGroupId, merchantId, pageId])
 
   return <div id="pr-write"></div>
 }
