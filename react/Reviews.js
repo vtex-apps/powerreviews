@@ -323,7 +323,7 @@ class Reviews extends Component {
             </div>
           </div>
           <span className="review__rating--average dib v-mid">
-            {this.state.average.toFixed(1)}
+            {this.state.reviews.length || 0}
           </span>
         </div>
         <div className="review__histogram">
