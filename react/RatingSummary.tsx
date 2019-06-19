@@ -22,6 +22,7 @@ const Reviews: FunctionComponent<ChildProps<Partial<ReviewProps>, Settings>> = p
   const { product } = useContext(ProductContext)
 
   const [average, setAverage] = useState(0)
+  const [totalReviews, setTotalReviews] = useState(0)
   const [alreadyReviews, setAlreadyReviews] = useState(false)
 
   useEffect(() => {
@@ -51,6 +52,7 @@ const Reviews: FunctionComponent<ChildProps<Partial<ReviewProps>, Settings>> = p
 
           setAverage(rollup != null ? rollup.average_rating : 0)
           setAlreadyReviews(reviews.length ? true : false)
+          setTotalReviews(reviews.length ? reviews.length : 0)
         })
         .catch((error: any) => {
           console.log('ERROR: ', error)
@@ -138,7 +140,7 @@ const Reviews: FunctionComponent<ChildProps<Partial<ReviewProps>, Settings>> = p
         </div>
       </div>
       <span className="review__rating--average dib v-mid c-muted-2 f6">
-        ({average.toFixed(1)})
+        ({totalReviews})
       </span>
       {!props.data.loading ? (
         <Link
