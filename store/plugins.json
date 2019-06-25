@@ -2,5 +2,6 @@
   "product-reviews": "product-reviews.power-reviews",
   "product-rating-summary": "product-rating-summary.power-reviews",
   "product-rating-inline": "product-rating-inline.power-reviews",
-  "product-review-form": "product-review-form.power-reviews"
+  "product-review-form": "product-review-form.power-reviews",
+  "pixels > pixel": "pixel.power-reviews"
 }
