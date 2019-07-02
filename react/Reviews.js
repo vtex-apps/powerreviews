@@ -1,8 +1,4 @@
-import React, { 
-  useContext,
-  useState,
-  useEffect
-} from 'react'
+import React, { useContext, useEffect, useCallback, useReducer } from 'react'
 
 import { ProductContext } from 'vtex.product-context'
 import queryRatingSummary from './graphql/queries/queryRatingSummary.gql'
@@ -18,103 +14,190 @@ import {
   Button,
 } from 'vtex.styleguide'
 
+const options = [
+  {
+    label: 'Most Recent',
+    value: 'Newest',
+  },
+  {
+    label: 'Oldest',
+    value: 'Oldest',
+  },
+  {
+    label: 'Highest Rated',
+    value: 'HighestRating',
+  },
+  {
+    label: 'Lowest Rated',
+    value: 'LowestRating',
+  },
+  {
+    label: 'Most Helpful',
+    value: 'MostHelpful',
+  },
+  {
+    label: 'Images',
+    value: 'MediaSort',
+  },
+]
+
+const filters = [
+  {
+    label: 'Select a filter...',
+    value: '0',
+  },
+  {
+    label: '1 star',
+    value: '1',
+  },
+  {
+    label: '2 stars',
+    value: '2',
+  },
+  {
+    label: '3 stars',
+    value: '3',
+  },
+  {
+    label: '4 stars',
+    value: '4',
+  },
+  {
+    label: '5 stars',
+    value: '5',
+  },
+]
+
+const getTimeAgo = time => {
+  let before = new Date(parseInt(time))
+  let now = new Date()
+  let diff = new Date(now - before)
+
+  let minutes = diff.getUTCMinutes()
+  let hours = diff.getUTCHours()
+  let days = diff.getUTCDate() - 1
+  let months = diff.getUTCMonth()
+  let years = diff.getUTCFullYear() - 1970
+
+  if (years != 0) {
+    return `${years} ${years > 1 ? 'years' : 'year'} ago`
+  } else if (months != 0) {
+    return `${months} ${months > 1 ? 'months' : 'month'} ago`
+  } else if (days != 0) {
+    return `${days} ${days > 1 ? 'days' : 'day'} ago`
+  } else if (hours != 0) {
+    return `${hours} ${hours > 1 ? 'hours' : 'hour'} ago`
+  } else {
+    return `${minutes} ${minutes > 1 ? 'minutes' : 'minute'} ago`
+  }
+}
+
+const initialState = {
+  reviews: null,
+  average: 0,
+  histogram: [],
+  count: 0,
+  percentage: [],
+  selected: 'Newest',
+  filter: 0,
+  paging: {},
+  page: 0,
+}
+
+const reducer = (state, action) => {
+  switch (action.type) {
+    case 'SET_REVIEWS': {
+      return {
+        ...state,
+        reviews: action.reviews,
+        average: action.average,
+        histogram: action.histogram,
+        percentage: action.percentage,
+        count: action.count,
+        paging: action.paging,
+      }
+    }
+    case 'SET_SELECTED_SORT': {
+      return {
+        ...state,
+        selected: action.selectedSort,
+      }
+    }
+    case 'SET_FILTER': {
+      return {
+        ...state,
+        filter: action.filter,
+        page: 0,
+      }
+    }
+    case 'SET_NEXT_PAGE': {
+      return {
+        ...state,
+        page: state.paging.current_page_number * 10,
+      }
+    }
+    case 'SET_PREVIOUS_PAGE': {
+      return {
+        ...state,
+        page: (state.paging.current_page_number - 2) * 10,
+      }
+    }
+    case 'VOTE_REVIEW': {
+      return {
+        ...state,
+        reviews: state.reviews.map((review, index) => {
+          if (index === action.reviewIndex) {
+            const types = {
+              unhelpful: 'not_helpful_votes',
+              helpful: 'helpful_votes',
+            }
+            const metricsType = types[action.voteType]
+
+            return {
+              ...review,
+              disabled: true,
+              metrics: {
+                ...review.metrics,
+                [metricsType]: (review.metrics[metricsType] += 1),
+              },
+            }
+          }
+
+          return review
+        }),
+      }
+    }
+    case 'TOGGLE_REVIEW_DETAILS': {
+      return {
+        ...state,
+        reviews: state.reviews.map((review, index) => {
+          if (index === action.reviewIndex) {
+            return {
+              ...review,
+              showDetails: !review.showDetails,
+            }
+          }
+
+          return review
+        }),
+      }
+    }
+  }
+}
+
 const Reviews = props => {
   const { product } = useContext(ProductContext)
-  console.log("product", product);
 
-  const [reviews, setReviews] = useState([])
-  const [average, setAverage] = useState(0)
-  const [histogram, setHistogram] = useState([])
-  const [count, setCount] = useState(0)
-  const [percentage, setPercentage] = useState([])
-  const [options, setOptions] = useState(
-    [
-      {
-        label: 'Most Recent',
-        value: 'Newest',
-      },
-      {
-        label: 'Oldest',
-        value: 'Oldest',
-      },
-      {
-        label: 'Highest Rated',
-        value: 'HighestRating',
-      },
-      {
-        label: 'Lowest Rated',
-        value: 'LowestRating',
-      },
-      {
-        label: 'Most Helpful',
-        value: 'MostHelpful',
-      },
-      {
-        label: 'Images',
-        value: 'MediaSort',
-      },
-    ]
-  )
-  const [selected, setSelected] = useState('Newest')
-  const [filter, setFilter] = useState('0')
-  const [filters, setFilters] = useState(
-    [
-      {
-        label: 'Select a filter...',
-        value: '0',
-      },
-      {
-        label: '1 star',
-        value: '1',
-      },
-      {
-        label: '2 stars',
-        value: '2',
-      },
-      {
-        label: '3 stars',
-        value: '3',
-      },
-      {
-        label: '4 stars',
-        value: '4',
-      },
-      {
-        label: '5 stars',
-        value: '5',
-      }
-    ]
-  )
-  const [paging, setPaging] = useState({})
-  const [detailsIsOpen, setDetailsIsOpen] = useState(false)
+  const [state, dispatch] = useReducer(reducer, initialState)
+  const { filter, selected, page, count, histogram, average } = state
 
   useEffect(() => {
-    console.log("product", product);
-    if (!product) return
-    console.log("getting new reviews");
-    getReviews('Newest')
-  }, [product, props.client])
-
-  const calculatePercentage = () => {
-
-    let arr = []
-
-    histogram.forEach((val, i) => {
-      arr.push(((100 / count) * val).toFixed(2) + '%') // cálculo de porcentagem
-    })
-
-    arr.reverse() // o layout começa no 5, por isso do .reverse()
-
-    setPercentage(arr)
-  }
-
-  const getReviews = (orderBy, page, filter) => {
     props.client
       .query({
         query: queryRatingSummary,
         variables: {
-          sort: orderBy,
-          page: page || 0,
+          sort: selected,
+          page: page,
           pageId: JSON.stringify({
             linkText: product.linkText,
             productId: product.productId,
@@ -124,122 +207,106 @@ const Reviews = props => {
         },
       })
       .then(response => {
-        let reviews = response.data.productReviews.results[0].reviews // revisar se sempre vem 1 item nesse array
-        let rollup = response.data.productReviews.results[0].rollup
-        let paging = response.data.productReviews.paging
+        // revisar se sempre vem 1 item nesse array
+        const reviews = response.data.productReviews.results[0].reviews
+        const rollup = response.data.productReviews.results[0].rollup
+        const paging = response.data.productReviews.paging
 
-        setReviews(reviews)
-        setAverage(rollup != null ? rollup.average_rating : 0)
-        setHistogram(rollup != null ? rollup.rating_histogram : [])
-        setCount(rollup != null ? rollup.review_count : 0)
-        setPaging(paging)
+        const hasNewHistogram = rollup != null && rollup.rating_histogram
+        const currentHistogram = hasNewHistogram
+          ? rollup.rating_histogram
+          : histogram
 
-        calculatePercentage()
+        const hasNewCount = rollup != null && rollup.review_count != null
+        const currentCount = hasNewCount ? rollup.review_count : count
+
+        const hasNewAverage = rollup != null && rollup.average_rating != null
+        const currentAverage = hasNewAverage ? rollup.average_rating : average
+
+        let percentage = []
+        currentHistogram.forEach(val => {
+          percentage.push(((100 / currentCount) * val).toFixed(2) + '%') // cálculo de porcentagem
+        })
+        percentage.reverse() // o layout começa no 5, por isso do .reverse()
+
+        dispatch({
+          type: 'SET_REVIEWS',
+          reviews,
+          average: currentAverage,
+          histogram: currentHistogram,
+          count: currentCount,
+          paging,
+          percentage,
+        })
       })
-  }
+  }, [
+    filter,
+    selected,
+    page,
+    count,
+    histogram,
+    average,
+    product.linkText,
+    product.productId,
+    product.productReference,
+    props.client,
+  ])
 
-  const handleSort = (event, value) => {
-    setSelected(value)
-    getReviews(value)
-  }
+  const voteReview = useCallback(
+    (reviewId, voteType, reviewIndex) => {
+      props.client
+        .mutate({
+          mutation: voteReviewQuery,
+          variables: { reviewId: reviewId, voteType: voteType },
+        })
+        .then(() => {
+          dispatch({
+            type: 'VOTE_REVIEW',
+            reviewIndex,
+            voteType,
+          })
+        })
+    },
+    [props.client]
+  )
 
-  const handleFilter = (event, value) => {
-    const currentSort = selected
-    const currentPage = 0
-
-    setFilter(value)
-    getReviews(currentSort, currentPage, value)
-  }
-
-  const handleClickNext = () => {
-    goToPage(paging.current_page_number * 10)
-  }
-
-  const handleClickPrevious = () => {
-    goToPage((paging.current_page_number - 2) * 10)
-  }
-
-  const getTimeAgo = time => {
-    let before = new Date(parseInt(time))
-    let now = new Date()
-    let diff = new Date(now - before)
-
-    let minutes = diff.getUTCMinutes()
-    let hours = diff.getUTCHours()
-    let days = diff.getUTCDate() - 1
-    let months = diff.getUTCMonth()
-    let years = diff.getUTCFullYear() - 1970
-
-    if (years != 0) {
-      return `${years} ${years > 1 ? 'years' : 'year'} ago`
-    } else if (months != 0) {
-      return `${months} ${months > 1 ? 'months' : 'month'} ago`
-    } else if (days != 0) {
-      return `${days} ${days > 1 ? 'days' : 'day'} ago`
-    } else if (hours != 0) {
-      return `${hours} ${hours > 1 ? 'hours' : 'hour'} ago`
-    } else {
-      return `${minutes} ${minutes > 1 ? 'minutes' : 'minute'} ago`
-    }
-  }
-
-  const goToPage = (page) => {
-    let orderBy = selected
-    const f = filter
-
-    props.client
-      .query({
-        query: queryRatingSummary,
-        variables: {
-          sort: orderBy,
-          page: page || 0,
-          pageId: JSON.stringify({
-            linkText: product.linkText,
-            productId: product.productId,
-            productReference: product.productReference,
-          }),
-          filter: parseInt(f) || 0,
-        },
+  const handleSort = useCallback(
+    (event, value) => {
+      dispatch({
+        type: 'SET_SELECTED_SORT',
+        selectedSort: value,
       })
-      .then(response => {
-        // eslint-disable-next-line no-console
-        console.log('response goToPage', response)
-        let reviews = response.data.productReviews.results[0].reviews // revisar se sempre vem 1 item nesse array
-        // let rollup = response.data.productReviews.results[0].rollup;
-        let paging = response.data.productReviews.paging
+    },
+    [dispatch]
+  )
 
-        setReviews(reviews)
-        setPaging(paging)
+  const handleFilter = useCallback(
+    (event, value) => {
+      dispatch({
+        type: 'SET_FILTER',
+        filter: value,
       })
+    },
+    [dispatch]
+  )
+
+  const handleClickNext = useCallback(() => {
+    dispatch({
+      type: 'SET_NEXT_PAGE',
+    })
+  }, [dispatch])
+
+  const handleClickPrevious = useCallback(() => {
+    dispatch({
+      type: 'SET_PREVIOUS_PAGE',
+    })
+  }, [dispatch])
+
+  if (state.reviews === null) {
+    return <div className="review mw8 center ph5">Loading reviews</div>
   }
 
-  const voteReview = (reviewId, voteType, reviewIndex) => {
-    props.client
-      .mutate({
-        mutation: voteReviewQuery,
-        variables: { reviewId: reviewId, voteType: voteType },
-      })
-      .then(response => {
-        // eslint-disable-next-line no-console
-        console.log(response)
-
-        const types = {
-          unhelpful: 'not_helpful_votes',
-          helpful: 'helpful_votes',
-        }
-        const metricsType = types[voteType]
-
-        let revs = reviews
-        let review = reviews[reviewIndex]
-        review.metrics[metricsType] += 1
-        review.disabled = true
-        revs[reviewIndex] = review
-
-        setReviews(revs)
-      })
-  }
-
-  return reviews.length ? (
+  return state.reviews.length ? (
     <div className="review mw8 center ph5">
       <h3 className="review__title t-heading-3 bb b--muted-5 mb5">Reviews</h3>
       <div className="review__rating">
@@ -280,10 +347,9 @@ const Reviews = props => {
           </div>
           <div
             className="review__rating--active nowrap overflow-hidden absolute top-0-s left-0-s"
-            style={{ width: average * 20 + '%' }}
+            style={{ width: state.average * 20 + '%' }}
           >
             {[0, 1, 2, 3, 4].map((_, i) => {
-
               return i <= 3 ? (
                 <svg
                   className="mr2"
@@ -291,7 +357,7 @@ const Reviews = props => {
                   xmlns="http://www.w3.org/2000/svg"
                   width="20"
                   height="20"
-                  fill={average > i ? '#fc0' : '#eee'}
+                  fill={state.average > i ? '#fc0' : '#eee'}
                   viewBox="0 0 14.737 14"
                 >
                   <path
@@ -305,7 +371,7 @@ const Reviews = props => {
                   xmlns="http://www.w3.org/2000/svg"
                   width="20"
                   height="20"
-                  fill={average > i ? '#fc0' : '#eee'}
+                  fill={state.average > i ? '#fc0' : '#eee'}
                   viewBox="0 0 14.737 14"
                 >
                   <path
@@ -317,13 +383,11 @@ const Reviews = props => {
             })}
           </div>
         </div>
-        <span className="review__rating--average dib v-mid">
-          {reviews.length || 0}
-        </span>
+        <span className="review__rating--average dib v-mid">{average}</span>
       </div>
       <div className="review__histogram">
         <ul className="bg-muted-5 pa7 list">
-          {percentage.map((percentage, i) => {
+          {state.percentage.map((percentage, i) => {
             return (
               <li key={i} className="mv3">
                 <span className="dib w-10 v-mid">
@@ -343,14 +407,14 @@ const Reviews = props => {
       <div className="review__comments">
         <div className="review__comments_head">
           <h4 className="review__comments_title t-heading-4 bb b--muted-5 mb5 pb4">
-            Reviewed by {count}{' '}
-            {count == 1 ? 'customer' : 'customers'}
+            Reviewed by {state.count}{' '}
+            {state.count == 1 ? 'customer' : 'customers'}
           </h4>
           <div className="mb7">
             <Dropdown
               options={options}
               onChange={handleSort}
-              value={selected}
+              value={state.selected}
               {...props}
             />
           </div>
@@ -358,7 +422,7 @@ const Reviews = props => {
             <Dropdown
               options={filters}
               onChange={handleFilter}
-              value={filter}
+              value={state.filter}
               {...props}
             />
           </div>
@@ -367,16 +431,12 @@ const Reviews = props => {
             {!props.data.loading ? (
               <a
                 href={`/new-review?pr_page_id=${
-                  product[
-                    props.data.getConfig.uniqueId
-                  ]
+                  product[props.data.getConfig.uniqueId]
                 }&pr_merchant_id=${
                   props.data.getConfig.merchantId
                 }&pr_api_key=${
                   props.data.getConfig.appKey
-                }&pr_merchant_group_id=${
-                  props.data.getConfig.merchantGroupId
-                }`}
+                }&pr_merchant_group_id=${props.data.getConfig.merchantGroupId}`}
               >
                 {' '}
                 Write a review{' '}
@@ -385,12 +445,9 @@ const Reviews = props => {
           </div>
         </div>
 
-        {reviews.map((review, i) => {
+        {state.reviews.map((review, i) => {
           return (
-            <div
-              key={i}
-              className="review__comment bw2 bb b--muted-5 mb5 pb4"
-            >
+            <div key={i} className="review__comment bw2 bb b--muted-5 mb5 pb4">
               <div className="review__comment--rating">
                 {[0, 1, 2, 3, 4].map((_, j) => {
                   return (
@@ -440,9 +497,7 @@ const Reviews = props => {
                   disabled={review.disabled}
                   variation="primary"
                   size="small"
-                  onClick={() =>
-                    voteReview(review.review_id, 'helpful', i)
-                  }
+                  onClick={() => voteReview(review.review_id, 'helpful', i)}
                 >
                   yes {review.metrics.helpful_votes}
                 </Button>
@@ -451,9 +506,7 @@ const Reviews = props => {
                   disabled={review.disabled}
                   variation="danger-tertiary"
                   size="small"
-                  onClick={() =>
-                    voteReview(review.review_id, 'unhelpful', i)
-                  }
+                  onClick={() => voteReview(review.review_id, 'unhelpful', i)}
                 >
                   no {review.metrics.not_helpful_votes}
                 </Button>
@@ -463,14 +516,10 @@ const Reviews = props => {
                 <Collapsible
                   header={<span>More details</span>}
                   onClick={e => {
-                    const reviewIndex = i
-
-                    let revs = reviews
-                    let review = reviews[reviewIndex]
-                    review.showDetails = !review.showDetails
-                    revs[reviewIndex] = review
-
-                    setReviews(revs)
+                    dispatch({
+                      type: 'TOGGLE_REVIEW_DETAILS',
+                      reviewIndex: i,
+                    })
                   }}
                   isOpen={review.showDetails}
                 >
@@ -524,16 +573,13 @@ const Reviews = props => {
       <div className="review__paging">
         <Pagination
           currentItemFrom={
-            1 +
-            (paging.current_page_number - 1) *
-              paging.page_size
+            1 + (state.paging.current_page_number - 1) * state.paging.page_size
           }
           currentItemTo={
-            paging.current_page_number *
-            paging.page_size
+            state.paging.current_page_number * state.paging.page_size
           }
           textOf="of"
-          totalItems={paging.total_results}
+          totalItems={state.paging.total_results}
           onNextClick={handleClickNext}
           onPrevClick={handleClickPrevious}
         />
@@ -545,14 +591,14 @@ const Reviews = props => {
       <div className="review__comments">
         <div className="review__comments_head">
           <h4 className="review__comments_title t-heading-4 bb b--muted-5 mb5 pb4">
-            Reviewed by {count}{' '}
-            {count == 1 ? 'customer' : 'customers'}
+            Reviewed by {state.count}{' '}
+            {state.count == 1 ? 'customer' : 'customers'}
           </h4>
           <div className="mb7">
             <Dropdown
               options={options}
               onChange={handleSort}
-              value={selected}
+              value={state.selected}
               {...props}
             />
           </div>
@@ -560,7 +606,7 @@ const Reviews = props => {
             <Dropdown
               options={filters}
               onChange={handleFilter}
-              value={filter}
+              value={state.filter}
               {...props}
             />
           </div>
@@ -569,16 +615,12 @@ const Reviews = props => {
             {!props.data.loading ? (
               <a
                 href={`/new-review?pr_page_id=${
-                  product[
-                    props.data.getConfig.uniqueId
-                  ]
+                  product[props.data.getConfig.uniqueId]
                 }&pr_merchant_id=${
                   props.data.getConfig.merchantId
                 }&pr_api_key=${
                   props.data.getConfig.appKey
-                }&pr_merchant_group_id=${
-                  props.data.getConfig.merchantGroupId
-                }`}
+                }&pr_merchant_group_id=${props.data.getConfig.merchantGroupId}`}
               >
                 Write a review
               </a>
@@ -594,7 +636,6 @@ const Reviews = props => {
       </div>
     </div>
   )
-
 }
 
 const withGetConfig = graphql(getConfig, {
