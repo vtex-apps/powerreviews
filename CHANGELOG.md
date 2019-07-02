@@ -7,6 +7,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+### Fixed
+
+- Method of getting Reviews.
+
 ## [1.0.5] - 2019-06-19
 
 ## [1.0.4] - 2019-06-18
