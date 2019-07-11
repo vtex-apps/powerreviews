@@ -157,14 +157,17 @@ const Summary: FunctionComponent<SummaryProps> = ({
           })}
         </div>
       </div>
-      <span className="review__rating--average mr4 dib c-muted-2 t-body f6-s">
+      <a
+        href="#all-reviews"
+        className="review__rating--average mr4 dib c-muted-2 t-body f6-s"
+      >
         (
         <FormattedMessage
           id="store/power-reviews.numberOfReviews"
           values={{ number: numberOfReviews }}
         />
         )
-      </span>
+      </a>
       {!loading ? (
         <Link className="dib c-on-base t-body f6-s" to={writeReviewLink}>
           <FormattedMessage id="store/power-reviews.writeAReview" />
