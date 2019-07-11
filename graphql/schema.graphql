@@ -1,6 +1,7 @@
 type Query {
   productReviews(sort: String!, filter: Int, page: Int, pageId: String): Review
-  getConfig: GetConfigResponse @cacheControl(scope: PRIVATE)
+    @cacheControl(scope: PUBLIC, maxAge: MEDIUM)
+  getConfig: GetConfigResponse @cacheControl(scope: PUBLIC, maxAge: MEDIUM)
 }
 
 type Mutation {
