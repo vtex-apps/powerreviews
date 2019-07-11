@@ -307,7 +307,7 @@ const Reviews = props => {
   }
 
   return state.reviews.length ? (
-    <div className="review mw8 center ph5">
+    <div className="review mw8 center ph5" id="all-reviews">
       <h3 className="review__title t-heading-3 bb b--muted-5 mb5">Reviews</h3>
       <div className="review__rating">
         <div className="review__rating--stars dib relative v-mid mr2">
