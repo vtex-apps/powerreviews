@@ -22,13 +22,24 @@ const RatingSummary: FunctionComponent<
   const { product } = useContext(ProductContext)
 
   const writeReviewLink =
-    props.data && props.data.getConfig
+    props.data && props.data.getConfig && product
       ? `/new-review?pr_page_id=${
           product[props.data.getConfig.uniqueId]
         }&pr_merchant_id=${props.data.getConfig.merchantId}&pr_api_key=${
           props.data.getConfig.appKey
         }&pr_merchant_group_id=${props.data.getConfig.merchantGroupId}`
       : ''
+
+  if (!product) {
+    return (
+      <Summary
+        loading
+        writeReviewLink={writeReviewLink}
+        rating={0}
+        numberOfReviews={0}
+      />
+    )
+  }
 
   return (
     <Query
