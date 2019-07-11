@@ -1,15 +1,10 @@
-import React, {
-  useContext,
-  FunctionComponent,
-  useState,
-  useEffect,
-} from 'react'
-import { ProductSummaryContext } from 'vtex.product-summary'
+import React, { FunctionComponent, useState, useEffect } from 'react'
+import { useProductSummary } from 'vtex.product-summary-context/ProductSummaryContext'
 import queryRatingSummary from './graphql/queries/queryRatingSummary.gql'
 import { withApollo } from 'react-apollo'
 
 const RatingInline: FunctionComponent<RatingInlineProps> = props => {
-  const { product } = useContext(ProductSummaryContext)
+  const { product } = useProductSummary()
 
   const [count, setCount] = useState(0)
   const [reviews, setReviews] = useState([])

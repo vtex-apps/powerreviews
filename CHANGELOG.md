@@ -7,6 +7,12 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+### Fixed
+
+- Use product-summary-context instead of deprecated product-summary.
+- Number of reviews in RatingSummary.
+- Add cache to GraphQL APIs.
+
 ## [1.0.6] - 2019-07-02
 
 ### Fixed

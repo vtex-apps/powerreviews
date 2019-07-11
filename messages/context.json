@@ -1,7 +1,4 @@
 {
-  "qna": "Questions and answers",
-  "stars": "Stars",
-  "rating-summary": "Rating summary",
-  "review-form": "Review form",
-  "reviews": "Reviews"
+  "store/power-reviews.numberOfReviews": "number of reviews",
+  "store/power-reviews.writeAReview": "Write a review"
 }
