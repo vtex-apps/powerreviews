@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react'
 import { useRuntime } from 'vtex.render-runtime'
-import getConfig from './graphql/getConfig.graphql'
+import getConfig from './graphql/getConfig.gql'
 import { graphql } from 'react-apollo'
 
 const ReviewForm = props => {

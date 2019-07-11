@@ -3,7 +3,7 @@ import React, { useContext, useEffect, useCallback, useReducer } from 'react'
 import { ProductContext } from 'vtex.product-context'
 import queryRatingSummary from './graphql/queries/queryRatingSummary.gql'
 import voteReviewQuery from './graphql/mutations/voteReview.gql'
-import getConfig from './graphql/getConfig.graphql'
+import getConfig from './graphql/getConfig.gql'
 import { withApollo, graphql } from 'react-apollo'
 
 import {
