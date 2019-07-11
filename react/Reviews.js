@@ -43,7 +43,7 @@ const options = [
 
 const filters = [
   {
-    label: 'Select a filter...',
+    label: 'All',
     value: '0',
   },
   {
@@ -99,7 +99,7 @@ const initialState = {
   count: 0,
   percentage: [],
   selected: 'Newest',
-  filter: 0,
+  filter: '0',
   paging: {},
   page: 0,
 }
@@ -410,21 +410,21 @@ const Reviews = props => {
             Reviewed by {state.count}{' '}
             {state.count == 1 ? 'customer' : 'customers'}
           </h4>
-          <div className="mb7">
-            <Dropdown
-              options={options}
-              onChange={handleSort}
-              value={state.selected}
-              {...props}
-            />
-          </div>
-          <div className="mb7">
-            <Dropdown
-              options={filters}
-              onChange={handleFilter}
-              value={state.filter}
-              {...props}
-            />
+          <div className="flex mb7">
+            <div className="mr4">
+              <Dropdown
+                options={options}
+                onChange={handleSort}
+                value={state.selected}
+              />
+            </div>
+            <div className="">
+              <Dropdown
+                options={filters}
+                onChange={handleFilter}
+                value={state.filter}
+              />
+            </div>
           </div>
 
           <div className="mv5">
@@ -594,21 +594,21 @@ const Reviews = props => {
             Reviewed by {state.count}{' '}
             {state.count == 1 ? 'customer' : 'customers'}
           </h4>
-          <div className="mb7">
-            <Dropdown
-              options={options}
-              onChange={handleSort}
-              value={state.selected}
-              {...props}
-            />
-          </div>
-          <div className="mb7">
-            <Dropdown
-              options={filters}
-              onChange={handleFilter}
-              value={state.filter}
-              {...props}
-            />
+          <div className="flex mb7">
+            <div className="mr4">
+              <Dropdown
+                options={options}
+                onChange={handleSort}
+                value={state.selected}
+              />
+            </div>
+            <div>
+              <Dropdown
+                options={filters}
+                onChange={handleFilter}
+                value={state.filter}
+              />
+            </div>
           </div>
 
           <div className="mv5">
@@ -629,7 +629,7 @@ const Reviews = props => {
 
           <div className="review__comment bw2 bb b--muted-5 mb5 pb4">
             <h5 className="review__comment--user lh-copy mw9 t-heading-5 mv5">
-              No reviews found!
+              No reviews.
             </h5>
           </div>
         </div>
