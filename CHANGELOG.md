@@ -7,6 +7,14 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+### Added
+
+- Anchor link to all reviews.
+
+### Fixed
+
+- Add safeguard if product is not loaded yet.
+
 ## [1.0.7] - 2019-07-11
 
 ### Fixed
