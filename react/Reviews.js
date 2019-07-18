@@ -187,11 +187,16 @@ const reducer = (state, action) => {
 
 const Reviews = props => {
   const { product } = useContext(ProductContext)
+  const { linkText, productId, productReference } = product || {}
 
   const [state, dispatch] = useReducer(reducer, initialState)
   const { filter, selected, page, count, histogram, average } = state
 
   useEffect(() => {
+    if (!linkText && !productId && !productReference) {
+      return
+    }
+
     props.client
       .query({
         query: queryRatingSummary,
@@ -199,9 +204,9 @@ const Reviews = props => {
           sort: selected,
           page: page,
           pageId: JSON.stringify({
-            linkText: product.linkText,
-            productId: product.productId,
-            productReference: product.productReference,
+            linkText: linkText,
+            productId: productId,
+            productReference: productReference,
           }),
           filter: parseInt(filter) || 0,
         },
@@ -246,9 +251,9 @@ const Reviews = props => {
     count,
     histogram,
     average,
-    product.linkText,
-    product.productId,
-    product.productReference,
+    linkText,
+    productId,
+    productReference,
     props.client,
   ])
 
