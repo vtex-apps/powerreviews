@@ -365,11 +365,7 @@ const Reviews = props => {
               <a
                 href={`/new-review?pr_page_id=${
                   product[props.data.getConfig.uniqueId]
-                }&pr_merchant_id=${
-                  props.data.getConfig.merchantId
-                }&pr_api_key=${
-                  props.data.getConfig.appKey
-                }&pr_merchant_group_id=${props.data.getConfig.merchantGroupId}`}
+                }`}
               >
                 {' '}
                 Write a review{' '}
@@ -549,11 +545,7 @@ const Reviews = props => {
               <a
                 href={`/new-review?pr_page_id=${
                   product[props.data.getConfig.uniqueId]
-                }&pr_merchant_id=${
-                  props.data.getConfig.merchantId
-                }&pr_api_key=${
-                  props.data.getConfig.appKey
-                }&pr_merchant_group_id=${props.data.getConfig.merchantGroupId}`}
+                }`}
               >
                 Write a review
               </a>
