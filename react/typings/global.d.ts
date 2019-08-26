@@ -11,7 +11,7 @@ interface Window extends Window {
 // Docs: https://help.powerreviews.com/Content/Post%20Purchase%20Email/Checkout%20Beacon.htm
 interface PowerReviewsClient {
   display: {
-    render: (params: RenderParams) => void
+    render: (params: PowerReviewsRenderParams) => void
   }
   tracker: {
     createTracker: (params: { merchantGroupId: string }) => PowerReviewsTracker
@@ -45,11 +45,25 @@ interface OrderFeedItem {
   unit_price: number
 }
 
-interface RenderParams {
+interface PowerReviewsRenderParams {
   api_key: string
   locale: string
   merchant_group_id: string
   merchant_id: string
   page_id: string
-  components: any
+  components?: any
+  product: PowerReviewsProduct
+}
+
+interface PowerReviewsProduct {
+  name?: string
+  url?: string
+  image_url?: string
+  description?: string
+  category_name?: string
+  upc?: string
+  brand_name?: string
+  price?: string | number
+  in_stock: boolean
+  variants?: PowerReviewsProduct[]
 }
