@@ -23,6 +23,9 @@ export default function useFeedless(settings: Settings) {
       ? selectedSeller.commertialOffer.AvailableQuantity > 0
       : false
 
+    const canonical = document.querySelector('link[rel=canonical]') as HTMLLinkElement
+    const url = canonical ? canonical.href : window.location.href
+
     /* eslint-disable @typescript-eslint/camelcase */
     window.POWERREVIEWS.display.render({
       api_key: settings.appKey,
@@ -32,7 +35,7 @@ export default function useFeedless(settings: Settings) {
       page_id: product[settings.uniqueId],
       product:{
         name: product.productName, 
-        url: window.location.href,
+        url: url,
         image_url: path(['images', '0', 'imageUrl'], selectedItem),
         description: product.description,
         category_name: product.categories && product.categories.length > 0
