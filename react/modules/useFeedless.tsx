@@ -42,42 +42,14 @@ export default function useFeedless(settings: Settings) {
         brand_name: product.brand,
         price: path(['commertialOffer', 'Price'], selectedSeller),
         in_stock: availability,
-        variants: [product.items.map((sku: Sku) => {
-          return {
-            name: sku.name,
-            description: '',
-            image_url: path(['images', '0', 'imageUrl'], sku),
-            upc: sku.ean,
-            price: path(['sellers', 0, 'commertialOffer', 'Price'], sku),
-            in_stock: path(['sellers', 0, 'commertialOffer', 'AvailableQuantity'], sku),
-          }
-        })]
       },
     })
   }, [scriptLoaded, settings, product])
 }
 
-interface Seller {
-  commertialOffer?: {
-    AvailableQuantity: number
-    Price?: number
-  }
-}
-
 interface Settings {
-  uniqueId: any
+  uniqueId: 'productReference' | 'ean' | 'linkText'
   merchantId: any
   appKey: string
   merchantGroupId: string
-}
-
-interface Sku {
-  name: string
-  image: Image[]
-  ean: string
-  sellers: Seller[]
-}
-
-interface Image {
-  imageUrl: string
 }
