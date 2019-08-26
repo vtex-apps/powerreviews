@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react'
 import { useRuntime } from 'vtex.render-runtime'
 import getConfig from './graphql/getConfig.gql'
+import usePRScript from './modules/usePRScript'
 import { graphql } from 'react-apollo'
 
 const ReviewForm = props => {
@@ -8,30 +9,12 @@ const ReviewForm = props => {
     culture: { locale },
     query,
   } = useRuntime()
-  const [loaded, setLoaded] = useState(false)
-  const [pageId, setPageId] = useState(null)
   const { appKey, merchantId, merchantGroupId } = props.data.getConfig || {}
 
-  useEffect(() => {
-    if (!props.data.loading) {
-      var script = document.createElement('script')
-      script.onload = function() {
-        setPageId(query.pr_page_id)
-        setLoaded(true)
-      }
-      script.src = 'https://ui.powerreviews.com/stable/4.0/ui.js'
-      document.body.appendChild(script)
-    }
-  }, [
-    appKey,
-    merchantId,
-    merchantGroupId,
-    props.data.loading,
-    query.pr_page_id,
-  ])
+  const scriptLoaded = usePRScript()
 
   useEffect(() => {
-    if (!window.POWERREVIEWS || loaded === false) {
+    if (!window.POWERREVIEWS || scriptLoaded === false) {
       return
     }
 
@@ -41,12 +24,12 @@ const ReviewForm = props => {
       locale: locale,
       merchant_group_id: merchantGroupId,
       merchant_id: merchantId,
-      page_id: pageId,
+      page_id: query.pr_page_id,
       components: {
         Write: 'pr-write',
       },
     })
-  }, [appKey, loaded, locale, merchantGroupId, merchantId, pageId])
+  }, [appKey, scriptLoaded, locale, merchantGroupId, merchantId, query.pr_page_id])
 
   return <div id="pr-write"></div>
 }
