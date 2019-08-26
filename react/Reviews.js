@@ -13,6 +13,7 @@ import {
   Dropdown,
   Button,
 } from 'vtex.styleguide'
+import useFeedless from './modules/useFeedless'
 
 const options = [
   {
@@ -192,6 +193,10 @@ const Reviews = props => {
   const [state, dispatch] = useReducer(reducer, initialState)
   const { filter, selected, page, count, histogram, average } = state
 
+  const config = props.data && props.data.getConfig ? props.data.getConfig : {}
+
+  useFeedless(config)
+
   useEffect(() => {
     if (!linkText && !productId && !productReference) {
       return
@@ -362,11 +367,7 @@ const Reviews = props => {
 
           <div className="mv5">
             {!props.data.loading ? (
-              <a
-                href={`/new-review?pr_page_id=${
-                  product[props.data.getConfig.uniqueId]
-                }`}
-              >
+              <a href={`/new-review?pr_page_id=${product[config.uniqueId]}`}>
                 {' '}
                 Write a review{' '}
               </a>
@@ -544,7 +545,7 @@ const Reviews = props => {
             {!props.data.loading ? (
               <a
                 href={`/new-review?pr_page_id=${
-                  product[props.data.getConfig.uniqueId]
+                  product[config.uniqueId]
                 }`}
               >
                 Write a review
@@ -563,10 +564,6 @@ const Reviews = props => {
   )
 }
 
-const withGetConfig = graphql(getConfig, {
-  options: () => ({
-    ssr: false,
-  }),
-})
+const withGetConfig = graphql(getConfig)
 
 export default withApollo(withGetConfig(Reviews))
