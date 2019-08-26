@@ -1,6 +1,6 @@
 import { useEffect, useContext } from 'react'
 import { path } from 'ramda'
-import { ProductContext } from 'vtex.product-context'
+import { ProductContext, IProductContext, Seller } from 'vtex.product-context'
 import { useRuntime } from 'vtex.render-runtime'
 import usePRScript from './usePRScript'
 
@@ -9,7 +9,7 @@ import usePRScript from './usePRScript'
 export default function useFeedless(settings: Settings) {
   const scriptLoaded = usePRScript()
   const { culture: { locale } } = useRuntime()
-  const { product, selectedItem } = useContext(ProductContext)
+  const { product, selectedItem } = useContext<IProductContext>(ProductContext)
 
   useEffect(() => {
     if (!window.POWERREVIEWS || scriptLoaded === false || !settings || !settings.appKey || !product.productName) {

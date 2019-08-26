@@ -502,6 +502,7 @@ const Reviews = props => {
       </div>
       <div className="review__paging">
         <Pagination
+          textShowRows=""
           currentItemFrom={
             1 + (state.paging.current_page_number - 1) * state.paging.page_size
           }
