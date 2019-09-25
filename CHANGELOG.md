@@ -7,6 +7,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [1.3.1] - 2019-09-25
+
 ## [1.3.0] - 2019-08-26
 ### Added
 - Feedless integration
