@@ -12,7 +12,7 @@ export default function useFeedless(settings: Settings) {
   const { product, selectedItem } = useContext<IProductContext>(ProductContext)
 
   useEffect(() => {
-    if (!window.POWERREVIEWS || scriptLoaded === false || !settings || !settings.appKey || !product.productName) {
+    if (!window.POWERREVIEWS || scriptLoaded === false || !settings || !settings.appKey || !product || !product.productName) {
       return
     }
 
