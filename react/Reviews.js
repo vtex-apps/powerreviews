@@ -411,12 +411,12 @@ const Reviews = props => {
                   <strong>Reviewed at</strong>
                   <Image
                     src={IMAGES_URI_PREFIX + review.details.brand_logo_uri}
-                    alt={'reviewed at'}
+                    alt={review.details.brand_base_url}
                     height={30}
                     link={{
                       url: review.details.brand_base_url,
                       noFollow: false,
-                      openNewTab: false,
+                      openNewTab: true,
                       title: '',
                     }}
                   />
