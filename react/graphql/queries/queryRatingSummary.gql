@@ -26,6 +26,8 @@ query productReviews($sort: String!, $filter: Int, $page: Int, $pageId: String) 
           upc
           updated_date
           bottom_line
+          brand_base_url
+          brand_logo_uri
           properties {
             key
             label

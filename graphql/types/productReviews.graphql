@@ -50,7 +50,9 @@ type Details {
   upc: String
   updated_date: ID,
   properties: [Properties],
-  bottom_line: String
+  bottom_line: String,
+  brand_base_url: String,
+  brand_logo_uri: String
 }
 
 type Metrics {
