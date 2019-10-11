@@ -1,5 +1,6 @@
 import React, { useContext, useEffect, useCallback, useReducer } from 'react'
 import { ProductContext } from 'vtex.product-context'
+import { Image } from 'vtex.store-image'
 import Stars from './components/Stars'
 import queryRatingSummary from './graphql/queries/queryRatingSummary.gql'
 import voteReviewQuery from './graphql/mutations/voteReview.gql'
@@ -14,6 +15,8 @@ import {
   Button,
 } from 'vtex.styleguide'
 import useFeedless from './modules/useFeedless'
+
+const IMAGES_URI_PREFIX = '//images.powerreviews.com'
 
 const options = [
   {
@@ -403,6 +406,22 @@ const Reviews = props => {
               <h5 className="review__comment--user lh-copy mw9 t-heading-5 mv5">
                 {review.details.headline}
               </h5>
+              {review.details.brand_base_url && (
+                <div className="flex items-center f6 c-muted-2 nt4">
+                  <strong>Reviewed at</strong>
+                  <Image
+                    src={IMAGES_URI_PREFIX + review.details.brand_logo_uri}
+                    alt={review.details.brand_base_url}
+                    height={30}
+                    link={{
+                      url: review.details.brand_base_url,
+                      noFollow: false,
+                      openNewTab: true,
+                      title: '',
+                    }}
+                  />
+                </div>
+              )}
               <ul className="pa0">
                 {review.badges.is_verified_buyer ? (
                   <li className="dib mr5">
@@ -544,11 +563,7 @@ const Reviews = props => {
 
           <div className="mv5">
             {!props.data.loading ? (
-              <a
-                href={`/new-review?pr_page_id=${
-                  product[config.uniqueId]
-                }`}
-              >
+              <a href={`/new-review?pr_page_id=${product[config.uniqueId]}`}>
                 Write a review
               </a>
             ) : null}

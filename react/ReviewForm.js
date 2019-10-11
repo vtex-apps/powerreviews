@@ -29,7 +29,14 @@ const ReviewForm = props => {
         Write: 'pr-write',
       },
     })
-  }, [appKey, scriptLoaded, locale, merchantGroupId, merchantId, query.pr_page_id])
+  }, [
+    appKey,
+    scriptLoaded,
+    locale,
+    merchantGroupId,
+    merchantId,
+    query.pr_page_id,
+  ])
 
   return <div id="pr-write"></div>
 }

@@ -74,7 +74,8 @@
     "vtex.product-context": "0.x",
     "vtex.store-header": "2.x",
     "vtex.store": "2.x",
-    "vtex.pixel-interfaces": "1.x"
+    "vtex.pixel-interfaces": "1.x",
+    "vtex.store-image": "0.x"
   },
   "$schema": "https://raw.githubusercontent.com/vtex/node-vtex-api/master/gen/manifest.schema"
 }
