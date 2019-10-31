@@ -580,6 +580,6 @@ const Reviews = props => {
   )
 }
 
-const withGetConfig = graphql(getConfig)
+const withGetConfig = graphql(getConfig, {options: { ssr: false }})
 
 export default withApollo(withGetConfig(Reviews))
