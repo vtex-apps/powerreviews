@@ -7,6 +7,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [1.4.2] - 2019-11-05
+
 ## [1.4.1] - 2019-10-31
 ### Changed
 - Make Reviews query not be ssr.
