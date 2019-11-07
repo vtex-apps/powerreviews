@@ -1,4 +1,4 @@
-import React, { useContext, useEffect, useCallback, useReducer } from 'react'
+import React, { useContext, useEffect, useCallback, useReducer, useRef } from 'react'
 import { ProductContext } from 'vtex.product-context'
 import { Image } from 'vtex.store-image'
 import Stars from './components/Stars'
@@ -192,6 +192,7 @@ const reducer = (state, action) => {
 const Reviews = props => {
   const { product } = useContext(ProductContext)
   const { linkText, productId, productReference } = product || {}
+  const variablesRef = useRef()
 
   const [state, dispatch] = useReducer(reducer, initialState)
   const { filter, selected, page, count, histogram, average } = state
@@ -205,19 +206,27 @@ const Reviews = props => {
       return
     }
 
+    const variables = {
+      sort: selected,
+      page: page,
+      pageId: JSON.stringify({
+        linkText: linkText,
+        productId: productId,
+        productReference: productReference,
+      }),
+      filter: parseInt(filter) || 0,
+    }
+
+    // Stop. We are fetching the same thing. Avoid infinite loop.
+    if (variablesRef.current === JSON.stringify(variables)) {
+      return
+    }
+    variablesRef.current = JSON.stringify(variables)
+
     props.client
       .query({
         query: queryRatingSummary,
-        variables: {
-          sort: selected,
-          page: page,
-          pageId: JSON.stringify({
-            linkText: linkText,
-            productId: productId,
-            productReference: productReference,
-          }),
-          filter: parseInt(filter) || 0,
-        },
+        variables,
       })
       .then(response => {
         // revisar se sempre vem 1 item nesse array
