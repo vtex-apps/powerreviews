@@ -82,4 +82,4 @@ interface StarsProps {
   rating: number
 }
 
-export default Stars
+export default React.memo(Stars)
