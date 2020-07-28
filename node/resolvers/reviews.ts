@@ -23,7 +23,8 @@ export const queries = {
     const product = JSON.parse(pageId)
 
     const fieldProductId = product[uniqueId]
-    const endpoint = `https://display.powerreviews.com/m/${merchantId}/l/${ctx.header["x-vtex-tenant"]}/product/${fieldProductId}/reviews?apikey=${appKey}&sort=${sort}&paging.size=10&paging.from=${page}${
+    const locale = ctx.header["x-vtex-tenant"] ? ctx.header["x-vtex-tenant"] : "en-US";
+    const endpoint = `https://display.powerreviews.com/m/${merchantId}/l/${locale.replace('-', '_')}/product/${fieldProductId}/reviews?apikey=${appKey}&sort=${sort}&paging.size=10&paging.from=${page}${
       filter ? '&filters=rating:' + filter : ''
     }`
     const requestOptions = {
