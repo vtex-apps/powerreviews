@@ -1,4 +1,43 @@
 {
   "store/power-reviews.numberOfReviews": "{number, plural, =0 {0 reviews} =1 {1 review} other {# reviews}}",
-  "store/power-reviews.writeAReview": "Write a review"
+  "store/power-reviews.writeAReview": "Write a review",
+  "store/power-reviews.noReviews":"No reviews",
+  "store/power-reviews.bottomLine": "In short",
+  "store/power-reviews.iWould": "I would",
+  "store/power-reviews.iWouldNot": "I would not",
+  "store/power-reviews.recommendToAFriend": "recommend to a friend",
+  "store/power-reviews.reviewBy": "Review of",
+  "store/power-reviews.year": "year",
+  "store/power-reviews.years": "years",
+  "store/power-reviews.month": "month",
+  "store/power-reviews.months": "months",
+  "store/power-reviews.day": "day",
+  "store/power-reviews.days": "Days"
+  "store/power-reviews.hour": "hour",
+  "store/power-reviews.hours": "Hours"
+  "store/power-reviews.minute": "minute",
+  "store/power-reviews.minutes": "Minutes"
+  "store/power-reviews.ago": "in the past",
+  "store/power-reviews.newest": "Newest",
+  "store/power-reviews.oldest": "The oldest",
+  "store/power-reviews.highestRating": "Most appreciated",
+  "store/power-reviews.lowestRating": "Less appreciated",
+  "store/power-reviews.mostHelpful": "The most useful",
+  "store/power-reviews.images": "With pictures",
+  "store/power-reviews.all": "All",
+  "store/power-reviews.star": "star",
+  "store/power-reviews.stars": "stars",
+  "store/power-reviews.reviews": "Reviews"
+  "store/power-reviews.customer": "client",
+  "store/power-reviews.customers": "customers",
+  "store/power-reviews.reviewedAt": "Review of",
+  "store/power-reviews.verifiedBuyer": "Verified Purchase",
+  "store/power-reviews.by": "Of",
+  "store/power-reviews.from": "From"
+  "store/power-reviews.wasItHelpful": "Was this review helpful to you?"
+  "store/power-reviews.yes": "Yes",
+  "store/power-reviews.no": "Not",
+  "store/power-reviews.moreDetails": "More details",
+  "store/power-reviews.submitted": "Date of publication",
+  "store/power-reviews.of": "In"
 }
