@@ -29,7 +29,7 @@ export default function useFeedless(settings: Settings) {
     /* eslint-disable @typescript-eslint/camelcase */
     window.POWERREVIEWS.display.render({
       api_key: settings.appKey,
-      locale: locale,
+      locale: locale.replace('-', '_'),
       merchant_group_id: settings.merchantGroupId,
       merchant_id: settings.merchantId,
       page_id: product[settings.uniqueId],
