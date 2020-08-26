@@ -2,6 +2,7 @@
   "store/power-reviews.numberOfReviews": "{number, plural, =0 {0 reviews} =1 {1 review} other {# reviews}}",
   "store/power-reviews.writeAReview": "Write a review",
   "store/power-reviews.noReviews":"No reviews",
+  "store/power-reviews.loadingReviews": "Loading Reviews ...",
   "store/power-reviews.bottomLine": "In short",
   "store/power-reviews.iWould": "I would",
   "store/power-reviews.iWouldNot": "I would not",

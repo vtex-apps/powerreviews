@@ -355,7 +355,7 @@ const Reviews = props => {
   ])
 
   if (state.reviews === null) {
-    return <div className="review mw8 center ph5">Loading reviews</div>
+    return <div className="review mw8 center ph5">{formatMessage('store/power-reviews.loadingReviews')}</div>
   }
 
   const formattedOptions = options(formatMessage)
@@ -378,7 +378,7 @@ const Reviews = props => {
               <li key={i} className="mv3">
                 <span className="dib w-10 v-mid">
                   {5 - i}{' '}
-                  {i < 4 ? formatMessage('stars') : formatMessage('star')}
+                  {i < 4 ? formatMessage('store/power-reviews.stars') : formatMessage('store/power-reviews.star')}
                 </span>
                 <div className="review__histogram--bar bg-white dib h2 w-90 v-mid">
                   <div
@@ -396,8 +396,8 @@ const Reviews = props => {
           <h4 className="review__comments_title t-heading-4 bb b--muted-5 mb5 pb4">
             {formatMessage('store/power-reviews.reviewBy')} {state.count}{' '}
             {state.count == 1
-              ? formatMessage('customer')
-              : formatMessage('customers')}
+              ? formatMessage('store/power-reviews.customer')
+              : formatMessage('store/power-reviews.customers')}
           </h4>
           <div className="flex mb7">
             <div className="mr4">
@@ -601,14 +601,14 @@ const Reviews = props => {
     </div>
   ) : (
     <div className="review mw8 center ph5">
-      <h3 className="review__title t-heading-3 bb b--muted-5 mb5">Reviews</h3>
+      <h3 className="review__title t-heading-3 bb b--muted-5 mb5">{formatMessage('store/power-reviews.reviews')}</h3>
       <div className="review__comments">
         <div className="review__comments_head">
           <h4 className="review__comments_title t-heading-4 bb b--muted-5 mb5 pb4">
             {formatMessage('store/power-reviews.reviewBy')} {state.count}{' '}
             {state.count == 1
-              ? formatMessage('customer')
-              : formatMessage('customers')}
+              ? formatMessage('store/power-reviews.customer')
+              : formatMessage('store/power-reviews.customers')}
           </h4>
           <div className="flex mb7">
             <div className="mr4">
