@@ -12,6 +12,7 @@ import queryRatingSummary from './graphql/queries/queryRatingSummary.gql'
 import voteReviewQuery from './graphql/mutations/voteReview.gql'
 import getConfig from './graphql/getConfig.gql'
 import { withApollo, graphql } from 'react-apollo'
+import { FormattedMessage, useIntl, defineMessages } from 'react-intl'
 
 import {
   IconSuccess,
@@ -21,65 +22,76 @@ import {
   Button,
 } from 'vtex.styleguide'
 import useFeedless from './modules/useFeedless'
-import { injectIntl } from 'react-intl'
 
 const IMAGES_URI_PREFIX = '//images.powerreviews.com'
 
+const messages = defineMessages({
+  newest: { id: 'store/power-reviews.newest' },
+  oldest: { id: 'store/power-reviews.oldest' },
+  highestRating: { id: 'store/power-reviews.highestRating' },
+  lowestRating: { id: 'store/power-reviews.lowestRating' },
+  mostHelpful: { id: 'store/power-reviews.mostHelpful' },
+  images: { id: 'store/power-reviews.images' },
+  all: { id: 'store/power-reviews.all' },
+  stars: { id: 'store/power-reviews.stars' },
+  of: { id: 'store/power-reviews.of' },
+})
+
 const options = formatMessage => [
   {
-    label: formatMessage('store/power-reviews.newest'),
+    label: formatMessage(messages.newest),
     value: 'Newest',
   },
   {
-    label: formatMessage('store/power-reviews.oldest'),
+    label: formatMessage(messages.oldest),
     value: 'Oldest',
   },
   {
-    label: formatMessage('store/power-reviews.highestRating'),
+    label: formatMessage(messages.highestRating),
     value: 'HighestRating',
   },
   {
-    label: formatMessage('store/power-reviews.lowestRating'),
+    label: formatMessage(messages.lowestRating),
     value: 'LowestRating',
   },
   {
-    label: formatMessage('store/power-reviews.mostHelpful'),
+    label: formatMessage(messages.mostHelpful),
     value: 'MostHelpful',
   },
   {
-    label: formatMessage('store/power-reviews.images'),
+    label: formatMessage(messages.images),
     value: 'MediaSort',
   },
 ]
 
 const filters = formatMessage => [
   {
-    label: formatMessage('store/power-reviews.all'),
+    label: formatMessage(messages.all),
     value: '0',
   },
   {
-    label: `1 ${formatMessage('store/power-reviews.star')}`,
+    label: formatMessage(messages.stars, { stars: 1 }),
     value: '1',
   },
   {
-    label: `2 ${formatMessage('store/power-reviews.stars')}`,
+    label: formatMessage(messages.stars, { stars: 2 }),
     value: '2',
   },
   {
-    label: `3 ${formatMessage('store/power-reviews.stars')}`,
+    label: formatMessage(messages.stars, { stars: 3 }),
     value: '3',
   },
   {
-    label: `4 ${formatMessage('store/power-reviews.stars')}`,
+    label: formatMessage(messages.stars, { stars: 4 }),
     value: '4',
   },
   {
-    label: `5 ${formatMessage('store/power-reviews.stars')}`,
+    label: formatMessage(messages.stars, { stars: 5 }),
     value: '5',
   },
 ]
 
-const getTimeAgo = (time, formatMessage) => {
+const getTimeAgo = time => {
   let before = new Date(parseInt(time))
   let now = new Date()
   let diff = new Date(now - before)
@@ -91,35 +103,31 @@ const getTimeAgo = (time, formatMessage) => {
   let years = diff.getUTCFullYear() - 1970
 
   if (years != 0) {
-    return `${years} ${
-      years > 1
-        ? formatMessage('store/power-reviews.years')
-        : formatMessage('store/power-reviews.year')
-    } ${formatMessage('store/power-reviews.ago')}`
+    return (
+      <FormattedMessage id="store/power-reviews.yearsAgo" values={{ years }} />
+    )
   } else if (months != 0) {
-    return `${months} ${
-      months > 1
-        ? formatMessage('store/power-reviews.months')
-        : formatMessage('store/power-reviews.month')
-    } ${formatMessage('store/power-reviews.ago')}`
+    return (
+      <FormattedMessage
+        id="store/power-reviews.monthsAgo"
+        values={{ months }}
+      />
+    )
   } else if (days != 0) {
-    return `${days} ${
-      days > 1
-        ? formatMessage('store/power-reviews.days')
-        : formatMessage('store/power-reviews.day')
-    } ${formatMessage('store/power-reviews.ago')}`
+    return (
+      <FormattedMessage id="store/power-reviews.daysAgo" values={{ days }} />
+    )
   } else if (hours != 0) {
-    return `${hours} ${
-      hours > 1
-        ? formatMessage('store/power-reviews.hours')
-        : formatMessage('store/power-reviews.hour')
-    } ${formatMessage('store/power-reviews.ago')}`
+    return (
+      <FormattedMessage id="store/power-reviews.hoursAgo" values={{ hours }} />
+    )
   } else {
-    return `${minutes} ${
-      minutes > 1
-        ? formatMessage('store/power-reviews.minutes')
-        : formatMessage('store/power-reviews.minute')
-    } ${formatMessage('store/power-reviews.ago')}`
+    return (
+      <FormattedMessage
+        id="store/power-reviews.minutesAgo"
+        values={{ minutes }}
+      />
+    )
   }
 }
 
@@ -218,6 +226,7 @@ const reducer = (state, action) => {
 
 const Reviews = props => {
   const { product } = useContext(ProductContext)
+  const { formatMessage } = useIntl()
   const { linkText, productId, productReference } = product || {}
   const variablesRef = useRef()
 
@@ -350,12 +359,13 @@ const Reviews = props => {
       type: 'SET_PREVIOUS_PAGE',
     })
   }, [dispatch])
-  const formatMessage = useCallback(id => props.intl.formatMessage({ id }), [
-    props.intl,
-  ])
 
   if (state.reviews === null) {
-    return <div className="review mw8 center ph5">{formatMessage('store/power-reviews.loadingReviews')}</div>
+    return (
+      <div className="review mw8 center ph5">
+        <FormattedMessage id="store/power-reviews.loadingReviews" />
+      </div>
+    )
   }
 
   const formattedOptions = options(formatMessage)
@@ -365,7 +375,7 @@ const Reviews = props => {
   return state.reviews.length ? (
     <div className="review mw8 center ph5" id="all-reviews">
       <h3 className="review__title t-heading-3 bb b--muted-5 mb5">
-        {formatMessage('store/power-reviews.reviews')}
+        <FormattedMessage id="store/power-reviews.reviews" />
       </h3>
       <div className="review__rating">
         <Stars rating={state.average} />
@@ -377,8 +387,10 @@ const Reviews = props => {
             return (
               <li key={i} className="mv3">
                 <span className="dib w-10 v-mid">
-                  {5 - i}{' '}
-                  {i < 4 ? formatMessage('store/power-reviews.stars') : formatMessage('store/power-reviews.star')}
+                  <FormattedMessage
+                    id="store/power-reviews.stars"
+                    values={{ stars: 5 - i }}
+                  />
                 </span>
                 <div className="review__histogram--bar bg-white dib h2 w-90 v-mid">
                   <div
@@ -394,10 +406,10 @@ const Reviews = props => {
       <div className="review__comments">
         <div className="review__comments_head">
           <h4 className="review__comments_title t-heading-4 bb b--muted-5 mb5 pb4">
-            {formatMessage('store/power-reviews.reviewBy')} {state.count}{' '}
-            {state.count == 1
-              ? formatMessage('store/power-reviews.customer')
-              : formatMessage('store/power-reviews.customers')}
+            <FormattedMessage
+              id="store/power-reviews.reviewedBy"
+              values={{ count: state.count }}
+            />
           </h4>
           <div className="flex mb7">
             <div className="mr4">
@@ -419,7 +431,8 @@ const Reviews = props => {
           <div className="mv5">
             {!props.data.loading ? (
               <a href={`/new-review?pr_page_id=${product[config.uniqueId]}`}>
-                {` ${formatMessage('store/power-reviews.writeAReview')} `}
+                {' '}
+                <FormattedMessage id="store/power-reviews.writeAReview" />{' '}
               </a>
             ) : null}
           </div>
@@ -456,7 +469,7 @@ const Reviews = props => {
               {review.details.brand_base_url && (
                 <div className="flex items-center f6 c-muted-2 nt4">
                   <strong>
-                    {formatMessage('store/power-reviews.reviewedAt')}
+                    <FormattedMessage id="store/power-reviews.reviewedAt" />
                   </strong>
                   <Image
                     src={IMAGES_URI_PREFIX + review.details.brand_logo_uri}
@@ -475,35 +488,43 @@ const Reviews = props => {
                 {review.badges.is_verified_buyer ? (
                   <li className="dib mr5">
                     <IconSuccess />{' '}
-                    {formatMessage('store/power-reviews.verifiedBuyer')}
+                    <FormattedMessage id="store/power-reviews.verifiedBuyer" />
                   </li>
                 ) : null}
                 <li className="dib mr5">
                   <strong>
-                    {formatMessage('store/power-reviews.submitted')}
+                    <FormattedMessage id="store/power-reviews.submitted" />
                   </strong>{' '}
-                  {getTimeAgo(review.details.created_date, formatMessage)}
+                  {getTimeAgo(review.details.created_date)}
                 </li>
                 <li className="dib mr5">
-                  <strong>{formatMessage('store/power-reviews.by')}</strong>{' '}
+                  <strong>
+                    <FormattedMessage id="store/power-reviews.by" />
+                  </strong>{' '}
                   {review.details.nickname}
                 </li>
                 <li className="dib">
-                  <strong>{formatMessage('store/power-reviews.from')}</strong>{' '}
+                  <strong>
+                    <FormattedMessage id="store/power-reviews.from" />
+                  </strong>{' '}
                   {review.details.location}
                 </li>
               </ul>
               <p className="t-body lh-copy mw9">{review.details.comments}</p>
               <div>
-                <h5>{formatMessage('store/power-reviews.wasItHelpful')}</h5>
+                <h5>
+                  <FormattedMessage id="store/power-reviews.wasItHelpful" />
+                </h5>
                 <Button
                   disabled={review.disabled}
                   variation="primary"
                   size="small"
                   onClick={() => voteReview(review.review_id, 'helpful', i)}
                 >
-                  {formatMessage('store/power-reviews.yes')}{' '}
-                  {review.metrics.helpful_votes}
+                  <FormattedMessage
+                    id="store/power-reviews.yes"
+                    values={{ votes: review.metrics.helpful_votes }}
+                  />
                 </Button>
 
                 <Button
@@ -512,8 +533,10 @@ const Reviews = props => {
                   size="small"
                   onClick={() => voteReview(review.review_id, 'unhelpful', i)}
                 >
-                  {formatMessage('store/power-reviews.no')}{' '}
-                  {review.metrics.not_helpful_votes}
+                  <FormattedMessage
+                    id="store/power-reviews.no"
+                    values={{ votes: review.metrics.not_helpful_votes }}
+                  />
                 </Button>
               </div>
 
@@ -521,7 +544,7 @@ const Reviews = props => {
                 <Collapsible
                   header={
                     <span>
-                      {formatMessage('store/power-reviews.moreDetails')}
+                      <FormattedMessage id="store/power-reviews.moreDetails" />
                     </span>
                   }
                   onClick={e => {
@@ -549,15 +572,14 @@ const Reviews = props => {
                     })}
                     {review.details.bottom_line ? (
                       <div className="w30">
-                        <h5 className="t-heading-5 ma0">Bottom Line</h5>
+                        <h5 className="t-heading-5 ma0">
+                          <FormattedMessage id="store/power-reviews.bottomLine" />
+                        </h5>
                         <p>
-                          {review.details.bottom_line},
-                          {review.details.bottom_line === 'No'
-                            ? formatMessage('store/power-reviews.iWouldNot')
-                            : formatMessage('store/power-reviews.iWould')}
-                          {formatMessage(
-                            `store/power-reviews.recommendToAFriend`
-                          )}
+                          <FormattedMessage
+                            id="store/power-reviews.recommend"
+                            values={{ recommend: review.details.bottom_line }}
+                          />
                         </p>
                       </div>
                     ) : null}
@@ -592,7 +614,7 @@ const Reviews = props => {
           currentItemTo={
             state.paging.current_page_number * state.paging.page_size
           }
-          textOf={formatMessage('store/power-reviews.of')}
+          textOf={formatMessage(messages.of)}
           totalItems={state.paging.total_results}
           onNextClick={handleClickNext}
           onPrevClick={handleClickPrevious}
@@ -601,14 +623,16 @@ const Reviews = props => {
     </div>
   ) : (
     <div className="review mw8 center ph5">
-      <h3 className="review__title t-heading-3 bb b--muted-5 mb5">{formatMessage('store/power-reviews.reviews')}</h3>
+      <h3 className="review__title t-heading-3 bb b--muted-5 mb5">
+        <FormattedMessage id="store/power-reviews.reviews" />
+      </h3>
       <div className="review__comments">
         <div className="review__comments_head">
           <h4 className="review__comments_title t-heading-4 bb b--muted-5 mb5 pb4">
-            {formatMessage('store/power-reviews.reviewBy')} {state.count}{' '}
-            {state.count == 1
-              ? formatMessage('store/power-reviews.customer')
-              : formatMessage('store/power-reviews.customers')}
+            <FormattedMessage
+              id="store/power-reviews.reviewedBy"
+              values={{ count: state.count }}
+            />
           </h4>
           <div className="flex mb7">
             <div className="mr4">
@@ -630,14 +654,14 @@ const Reviews = props => {
           <div className="mv5">
             {!props.data.loading ? (
               <a href={`/new-review?pr_page_id=${product[config.uniqueId]}`}>
-                {formatMessage('store/power-reviews.writeAReview')}
+                <FormattedMessage id="store/power-reviews.writeAReview" />
               </a>
             ) : null}
           </div>
 
           <div className="review__comment bw2 bb b--muted-5 mb5 pb4">
             <h5 className="review__comment--user lh-copy mw9 t-heading-5 mv5">
-              {formatMessage('store/power-reviews.noReviews')}
+              <FormattedMessage id="store/power-reviews.noReviews" />
             </h5>
           </div>
         </div>
@@ -648,4 +672,4 @@ const Reviews = props => {
 
 const withGetConfig = graphql(getConfig, { options: { ssr: false } })
 
-export default withApollo(withGetConfig(injectIntl(Reviews)))
+export default withApollo(withGetConfig(Reviews))
