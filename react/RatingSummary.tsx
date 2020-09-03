@@ -63,18 +63,35 @@ const RatingSummary: FC<Props> = ({ appSettings }) => {
   )
 }
 
-const Summary: FunctionComponent<SummaryProps> = ({
+interface SummaryProps {
+  writeReviewLink: string
+  rating: number
+  numberOfReviews: number
+  loading: boolean
+}
+
+const CSS_HANDLES = [
+  'powerReviewsRatingSummary',
+  'powerReviewsRatingSummaryAverage',
+  'powerReviewsRatingSummaryWriteAReview',
+] as const
+
+const Summary: FC<SummaryProps> = ({
   writeReviewLink,
   loading,
   rating,
   numberOfReviews,
 }) => {
+  const handles = useCssHandles(CSS_HANDLES)
+
   return (
-    <div className="review__rating mw8 center mb5">
+    <div
+      className={`${handles.powerReviewsRatingSummary} review__rating mw8 center mb5`}
+    >
       <Stars rating={rating} />
       <a
         href="#all-reviews"
-        className="review__rating--average mr4 dib c-muted-2 t-body f6-s"
+        className={`${handles.powerReviewsRatingSummaryAverage} review__rating--average mr4 dib c-muted-2 t-body f6-s`}
       >
         (
         <FormattedMessage
@@ -84,7 +101,10 @@ const Summary: FunctionComponent<SummaryProps> = ({
         )
       </a>
       {!loading ? (
-        <Link className="dib c-on-base t-body f6-s" to={writeReviewLink}>
+        <Link
+          className={`${handles.powerReviewsRatingSummaryWriteAReview} dib c-on-base t-body f6-s`}
+          to={writeReviewLink}
+        >
           <FormattedMessage id="store/power-reviews.writeAReview" />
         </Link>
       ) : null}

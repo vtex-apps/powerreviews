@@ -7,6 +7,7 @@ declare module 'vtex.product-context' {
   }
 
   interface Product {
+    productId: string
     productName: string
     description: string
     categories: string[]

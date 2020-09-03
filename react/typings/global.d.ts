@@ -59,7 +59,7 @@ interface PowerReviewsRenderParams {
   merchant_id: string
   page_id: string
   components?: any
-  product: PowerReviewsProduct
+  product?: PowerReviewsProduct
 }
 
 interface PowerReviewsProduct {

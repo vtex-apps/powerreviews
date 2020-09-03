@@ -3,9 +3,13 @@ import { useProductSummary } from 'vtex.product-summary-context/ProductSummaryCo
 import Stars from './components/Stars'
 import queryRatingSummary from './graphql/queries/queryRatingSummary.gql'
 import { withApollo } from 'react-apollo'
+import { useCssHandles } from 'vtex.css-handles'
+
+const CSS_HANDLES = ['powerReviewsRatingInline'] as const
 
 const RatingInline: FunctionComponent<RatingInlineProps> = props => {
   const { product } = useProductSummary()
+  const handles = useCssHandles(CSS_HANDLES)
 
   const [count, setCount] = useState(0)
   const [reviews, setReviews] = useState([])
@@ -49,7 +53,9 @@ const RatingInline: FunctionComponent<RatingInlineProps> = props => {
   }, [count, product, props.client])
 
   return (
-    <div className="review__rating mw8 center ph5">
+    <div
+      className={`${handles.powerReviewsRatingInline} review__rating mw8 center ph5`}
+    >
       <Stars rating={reviews.length ? average : 0} />
     </div>
   )
