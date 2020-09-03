@@ -21,7 +21,7 @@ const ReviewForm = props => {
     /* eslint-disable @typescript-eslint/camelcase */
     window.POWERREVIEWS.display.render({
       api_key: appKey,
-      locale: locale,
+      locale: locale.replace('-', '_'),
       merchant_group_id: merchantGroupId,
       merchant_id: merchantId,
       page_id: query.pr_page_id,

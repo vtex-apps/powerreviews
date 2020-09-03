@@ -7,6 +7,14 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [1.5.0] - 2020-09-02
+### Added
+- Internationalization.
+
+## [1.4.4] - 2020-08-19
+### Fixed
+- Get reviews from locale.
+
 ## [1.4.3] - 2019-11-07
 ### Fixed
 - Fix infinite loop on data-fetching.

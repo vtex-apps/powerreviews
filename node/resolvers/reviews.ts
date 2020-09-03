@@ -23,11 +23,15 @@ export const queries = {
     const product = JSON.parse(pageId)
 
     const fieldProductId = product[uniqueId]
-
-    const endpoint = `https://display.powerreviews.com/m/${merchantId}/l/en_US/product/${fieldProductId}/reviews?apikey=${appKey}&sort=${sort}&paging.size=10&paging.from=${page}${
+    const locale = ctx.header['x-vtex-tenant']
+      ? ctx.header['x-vtex-tenant']
+      : 'en-US'
+    const endpoint = `https://display.powerreviews.com/m/${merchantId}/l/${locale.replace(
+      '-',
+      '_'
+    )}/product/${fieldProductId}/reviews?apikey=${appKey}&sort=${sort}&paging.size=10&paging.from=${page}${
       filter ? '&filters=rating:' + filter : ''
     }`
-    console.log(endpoint)
     const requestOptions = {
       headers: {
         'Proxy-Authorization': ctx.vtex.authToken,
@@ -44,7 +48,6 @@ export const queries = {
       throw new TypeError(error.response.data)
     }
 
-    console.log(reviews)
     return reviews.data
   },
 
