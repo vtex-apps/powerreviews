@@ -11,10 +11,8 @@ import { useCssHandles } from 'vtex.css-handles'
 import Stars from './components/Stars'
 import queryRatingSummary from './graphql/queries/queryRatingSummary.gql'
 import voteReviewQuery from './graphql/mutations/voteReview.gql'
-import getConfig from './graphql/getConfig.gql'
-import { withApollo, graphql } from 'react-apollo'
+import { withApollo } from 'react-apollo'
 import { FormattedMessage, useIntl, defineMessages } from 'react-intl'
-import classnames from 'classnames'
 
 import {
   IconSuccess,
@@ -238,7 +236,7 @@ const Reviews = props => {
   const [state, dispatch] = useReducer(reducer, initialState)
   const { filter, selected, page, count, histogram, average } = state
 
-  const config = props.data && props.data.getConfig ? props.data.getConfig : {}
+  const config = props.appSettings ? props.appSettings : {}
 
   useFeedless(config)
 
@@ -690,6 +688,4 @@ const Reviews = props => {
   )
 }
 
-const withGetConfig = graphql(getConfig, { options: { ssr: false } })
-
-export default withApollo(withGetConfig(Reviews))
+export default withApollo(Reviews)

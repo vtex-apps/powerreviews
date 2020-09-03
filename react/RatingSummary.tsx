@@ -1,30 +1,22 @@
-import React, { FunctionComponent, useContext } from 'react'
+import React, { useContext, FC } from 'react'
 import { FormattedMessage } from 'react-intl'
 import { ProductContext } from 'vtex.product-context'
 import Stars from './components/Stars'
 import queryRatingSummary from './graphql/queries/queryRatingSummary.gql'
-import getConfig from './graphql/getConfig.gql'
-import { withApollo, graphql, ChildProps, Query } from 'react-apollo'
+import { withApollo, Query } from 'react-apollo'
 import { Link } from 'vtex.render-runtime'
+import { useCssHandles } from 'vtex.css-handles'
 
-interface Settings {
-  appKey: string
-  uniqueId: string
-  merchantId: string
-  merchantGroupId: string
+interface Props {
+  appSettings: Settings
 }
-const withSettings = graphql<{ client: any }, Settings>(getConfig, {
-  options: () => ({ ssr: false }),
-})
 
-const RatingSummary: FunctionComponent<
-  ChildProps<Partial<RatingSummaryProps>, Settings>
-> = props => {
+const RatingSummary: FC<Props> = ({ appSettings }) => {
   const { product } = useContext(ProductContext)
 
   const writeReviewLink =
-    props.data && props.data.getConfig && product
-      ? `/new-review?pr_page_id=${product[props.data.getConfig.uniqueId]}`
+    appSettings && product
+      ? `/new-review?pr_page_id=${product[appSettings.uniqueId]}`
       : ''
 
   if (!product) {
@@ -100,16 +92,4 @@ const Summary: FunctionComponent<SummaryProps> = ({
   )
 }
 
-interface SummaryProps {
-  writeReviewLink: string
-  rating: number
-  numberOfReviews: number
-  loading: boolean
-}
-
-interface RatingSummaryProps {
-  client: any
-  data: any
-}
-
-export default withApollo(withSettings(RatingSummary))
+export default withApollo(RatingSummary)

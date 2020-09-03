@@ -48,21 +48,25 @@
     "properties": {
       "appKey": {
         "type": "string",
+        "access": "public",
         "title": "App Key",
         "description": "Your App Key"
       },
       "merchantId": {
         "type": "string",
+        "access": "public",
         "title": "Merchant Id",
         "description": "Enter your Merchant Id"
       },
       "merchantGroupId": {
         "type": "string",
+        "access": "public",
         "title": "Merchant Group Id",
         "description": "Enter your Merchant Group Id"
       },
       "uniqueId": {
         "type": "string",
+        "access": "public",
         "enum": [
           "productId",
           "linkText",
