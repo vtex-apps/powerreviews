@@ -7,12 +7,14 @@ import React, {
 } from 'react'
 import { ProductContext } from 'vtex.product-context'
 import { Image } from 'vtex.store-image'
+import { useCssHandles } from 'vtex.css-handles'
 import Stars from './components/Stars'
 import queryRatingSummary from './graphql/queries/queryRatingSummary.gql'
 import voteReviewQuery from './graphql/mutations/voteReview.gql'
 import getConfig from './graphql/getConfig.gql'
 import { withApollo, graphql } from 'react-apollo'
 import { FormattedMessage, useIntl, defineMessages } from 'react-intl'
+import classnames from 'classnames'
 
 import {
   IconSuccess,
@@ -24,6 +26,8 @@ import {
 import useFeedless from './modules/useFeedless'
 
 const IMAGES_URI_PREFIX = '//images.powerreviews.com'
+
+const CSS_HANDLES = ['reviews-wrapper']
 
 const messages = defineMessages({
   newest: { id: 'store/power-reviews.newest' },
@@ -225,6 +229,7 @@ const reducer = (state, action) => {
 }
 
 const Reviews = props => {
+  const handles = useCssHandles(CSS_HANDLES)
   const { product } = useContext(ProductContext)
   const { formatMessage } = useIntl()
   const { linkText, productId, productReference } = product || {}
@@ -373,7 +378,15 @@ const Reviews = props => {
   const formattedFilters = filters(formatMessage)
 
   return state.reviews.length ? (
-    <div className="review mw8 center ph5" id="all-reviews">
+    <div
+      className={classnames(handles['reviews-wrapper'], [
+        'review',
+        'mw8',
+        'center',
+        'ph5',
+      ])}
+      id="all-reviews"
+    >
       <h3 className="review__title t-heading-3 bb b--muted-5 mb5">
         <FormattedMessage id="store/power-reviews.reviews" />
       </h3>
@@ -622,7 +635,14 @@ const Reviews = props => {
       </div>
     </div>
   ) : (
-    <div className="review mw8 center ph5">
+    <div
+      className={classnames(handles['reviews-wrapper'], [
+        'review',
+        'mw8',
+        'center',
+        'ph5',
+      ])}
+    >
       <h3 className="review__title t-heading-3 bb b--muted-5 mb5">
         <FormattedMessage id="store/power-reviews.reviews" />
       </h3>

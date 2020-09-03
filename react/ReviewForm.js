@@ -1,10 +1,15 @@
 import React, { useEffect, useState } from 'react'
 import { useRuntime } from 'vtex.render-runtime'
+import { useCssHandles } from 'vtex.css-handles'
 import getConfig from './graphql/getConfig.gql'
 import usePRScript from './modules/usePRScript'
 import { graphql } from 'react-apollo'
 
+const CSS_HANDLES = ['add-review-wrapper']
+
 const ReviewForm = props => {
+  const handles = useCssHandles(CSS_HANDLES)
+
   const {
     culture: { locale },
     query,
@@ -38,7 +43,9 @@ const ReviewForm = props => {
     query.pr_page_id,
   ])
 
-  return <div id="pr-write"></div>
+  return (
+    <div className={handles['add-review-wrapper']} id="pr-write" />
+  )
 }
 
 const withGetConfig = graphql(getConfig, {
