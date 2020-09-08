@@ -1,6 +1,7 @@
 import axios from 'axios'
 import { Apps } from '@vtex/api'
-const _vtexProxy = (url: any) => {
+
+const _vtexProxy = (url: string) => {
   return url.replace('https', 'http')
 }
 
@@ -10,15 +11,18 @@ declare var process: {
   }
 }
 
+async function getConfig(ctx: any) {
+  const apps = new Apps(ctx.vtex)
+  const appId = process.env.VTEX_APP_ID
+  const settings = await apps.getAppSettings(appId)
+  return settings
+}
+
 export const queries = {
   productReviews: async (_: any, args: any, ctx: any) => {
     const { sort, page, pageId, filter } = args
 
-    const { appKey, merchantId, uniqueId } = await queries.getConfig(
-      null,
-      null,
-      ctx
-    )
+    const { appKey, merchantId, uniqueId } = await getConfig(ctx)
 
     const product = JSON.parse(pageId)
 
@@ -50,20 +54,13 @@ export const queries = {
 
     return reviews.data
   },
-
-  getConfig: async (_: any, __: any, ctx: any) => {
-    const apps = new Apps(ctx.vtex)
-    const appId = process.env.VTEX_APP_ID
-    const settings = await apps.getAppSettings(appId)
-    return settings
-  },
 }
 
 export const mutations = {
   voteReview: async (_: any, args: any, ctx: any) => {
     const { reviewId, voteType } = args
 
-    const { merchantId } = await queries.getConfig(null, null, ctx)
+    const { merchantId } = await getConfig(ctx)
 
     const endpoint = `https://writeservices.powerreviews.com/voteugc`
     const requestOptions = {

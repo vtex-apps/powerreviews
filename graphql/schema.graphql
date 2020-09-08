@@ -1,7 +1,6 @@
 type Query {
   productReviews(sort: String!, filter: Int, page: Int, pageId: String): Review
     @cacheControl(scope: PUBLIC, maxAge: MEDIUM)
-  getConfig: GetConfigResponse @cacheControl(scope: PUBLIC, maxAge: MEDIUM)
 }
 
 type Mutation {
@@ -11,11 +10,4 @@ type Mutation {
 type VoteReviewResponse {
   cookie: String
   ugc_id: String
-}
-
-type GetConfigResponse {
-  appKey: String
-  merchantId: String
-  uniqueId: String
-  merchantGroupId: String
 }

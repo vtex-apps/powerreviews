@@ -1,15 +1,18 @@
-import React, { useEffect, useState } from 'react'
+import React, { useEffect } from 'react'
 import { useRuntime } from 'vtex.render-runtime'
-import getConfig from './graphql/getConfig.gql'
+import { useCssHandles } from 'vtex.css-handles'
 import usePRScript from './modules/usePRScript'
-import { graphql } from 'react-apollo'
 
-const ReviewForm = props => {
+const CSS_HANDLES = ['powerReviewsForm'] as const
+
+const ReviewForm = ({ appSettings }: { appSettings: Settings }) => {
+  const handles = useCssHandles(CSS_HANDLES)
+
   const {
     culture: { locale },
     query,
   } = useRuntime()
-  const { appKey, merchantId, merchantGroupId } = props.data.getConfig || {}
+  const { appKey, merchantId, merchantGroupId } = appSettings
 
   const scriptLoaded = usePRScript()
 
@@ -38,13 +41,7 @@ const ReviewForm = props => {
     query.pr_page_id,
   ])
 
-  return <div id="pr-write"></div>
+  return <div className={handles.powerReviewsForm} id="pr-write" />
 }
 
-const withGetConfig = graphql(getConfig, {
-  options: () => ({
-    ssr: false,
-  }),
-})
-
-export default withGetConfig(ReviewForm)
+export default ReviewForm

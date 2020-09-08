@@ -48,21 +48,25 @@
     "properties": {
       "appKey": {
         "type": "string",
+        "access": "public",
         "title": "App Key",
         "description": "Your App Key"
       },
       "merchantId": {
         "type": "string",
+        "access": "public",
         "title": "Merchant Id",
         "description": "Enter your Merchant Id"
       },
       "merchantGroupId": {
         "type": "string",
+        "access": "public",
         "title": "Merchant Group Id",
         "description": "Enter your Merchant Group Id"
       },
       "uniqueId": {
         "type": "string",
+        "access": "public",
         "enum": [
           "productId",
           "linkText",
@@ -82,7 +86,8 @@
     "vtex.store-header": "2.x",
     "vtex.store": "2.x",
     "vtex.pixel-interfaces": "1.x",
-    "vtex.store-image": "0.x"
+    "vtex.store-image": "0.x",
+    "vtex.css-handles": "0.x"
   },
   "$schema": "https://raw.githubusercontent.com/vtex/node-vtex-api/master/gen/manifest.schema"
 }

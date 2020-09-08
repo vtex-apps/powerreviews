@@ -6,7 +6,8 @@
     "prop-types": "15.6.2",
     "react": "16.3.2",
     "react-apollo": "2.4.1",
-    "react-intl": "3"
+    "react-intl": "3",
+    "classnames": "2.2.6"
   },
   "devDependencies": {
     "@types/classnames": "^2.2.7",
@@ -24,7 +25,8 @@
     "eslint-config-vtex-react": "^4.1.0",
     "prettier": "^1.18.2",
     "tslint-eslint-rules": "^5.4.0",
-    "typescript": "3.8.3"
+    "typescript": "3.8.3",
+    "vtex.css-handles": "http://vtex.vtexassets.com/_v/public/typings/v1/vtex.css-handles@0.4.4/public/@types/vtex.css-handles"
   },
   "version": "1.5.0"
 }

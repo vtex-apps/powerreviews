@@ -8,6 +8,13 @@ interface Window extends Window {
   POWERREVIEWS: PowerReviewsClient
 }
 
+interface Settings {
+  appKey: string
+  merchantId: string
+  merchantGroupId: string
+  uniqueId: 'productId' | 'linkText' | 'productReference'
+}
+
 // Docs: https://help.powerreviews.com/Content/Post%20Purchase%20Email/Checkout%20Beacon.htm
 interface PowerReviewsClient {
   display: {
@@ -52,7 +59,7 @@ interface PowerReviewsRenderParams {
   merchant_id: string
   page_id: string
   components?: any
-  product: PowerReviewsProduct
+  product?: PowerReviewsProduct
 }
 
 interface PowerReviewsProduct {

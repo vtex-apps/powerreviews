@@ -1,30 +1,22 @@
-import React, { FunctionComponent, useContext } from 'react'
+import React, { useContext, FC } from 'react'
 import { FormattedMessage } from 'react-intl'
 import { ProductContext } from 'vtex.product-context'
 import Stars from './components/Stars'
 import queryRatingSummary from './graphql/queries/queryRatingSummary.gql'
-import getConfig from './graphql/getConfig.gql'
-import { withApollo, graphql, ChildProps, Query } from 'react-apollo'
+import { withApollo, Query } from 'react-apollo'
 import { Link } from 'vtex.render-runtime'
+import { useCssHandles } from 'vtex.css-handles'
 
-interface Settings {
-  appKey: string
-  uniqueId: string
-  merchantId: string
-  merchantGroupId: string
+interface Props {
+  appSettings: Settings
 }
-const withSettings = graphql<{ client: any }, Settings>(getConfig, {
-  options: () => ({ ssr: false }),
-})
 
-const RatingSummary: FunctionComponent<
-  ChildProps<Partial<RatingSummaryProps>, Settings>
-> = props => {
+const RatingSummary: FC<Props> = ({ appSettings }) => {
   const { product } = useContext(ProductContext)
 
   const writeReviewLink =
-    props.data && props.data.getConfig && product
-      ? `/new-review?pr_page_id=${product[props.data.getConfig.uniqueId]}`
+    appSettings && product
+      ? `/new-review?pr_page_id=${product[appSettings.uniqueId]}`
       : ''
 
   if (!product) {
@@ -71,18 +63,35 @@ const RatingSummary: FunctionComponent<
   )
 }
 
-const Summary: FunctionComponent<SummaryProps> = ({
+interface SummaryProps {
+  writeReviewLink: string
+  rating: number
+  numberOfReviews: number
+  loading: boolean
+}
+
+const CSS_HANDLES = [
+  'powerReviewsRatingSummary',
+  'powerReviewsRatingSummaryAverage',
+  'powerReviewsRatingSummaryWriteAReview',
+] as const
+
+const Summary: FC<SummaryProps> = ({
   writeReviewLink,
   loading,
   rating,
   numberOfReviews,
 }) => {
+  const handles = useCssHandles(CSS_HANDLES)
+
   return (
-    <div className="review__rating mw8 center mb5">
+    <div
+      className={`${handles.powerReviewsRatingSummary} review__rating mw8 center mb5`}
+    >
       <Stars rating={rating} />
       <a
         href="#all-reviews"
-        className="review__rating--average mr4 dib c-muted-2 t-body f6-s"
+        className={`${handles.powerReviewsRatingSummaryAverage} review__rating--average mr4 dib c-muted-2 t-body f6-s`}
       >
         (
         <FormattedMessage
@@ -92,7 +101,10 @@ const Summary: FunctionComponent<SummaryProps> = ({
         )
       </a>
       {!loading ? (
-        <Link className="dib c-on-base t-body f6-s" to={writeReviewLink}>
+        <Link
+          className={`${handles.powerReviewsRatingSummaryWriteAReview} dib c-on-base t-body f6-s`}
+          to={writeReviewLink}
+        >
           <FormattedMessage id="store/power-reviews.writeAReview" />
         </Link>
       ) : null}
@@ -100,16 +112,4 @@ const Summary: FunctionComponent<SummaryProps> = ({
   )
 }
 
-interface SummaryProps {
-  writeReviewLink: string
-  rating: number
-  numberOfReviews: number
-  loading: boolean
-}
-
-interface RatingSummaryProps {
-  client: any
-  data: any
-}
-
-export default withApollo(withSettings(RatingSummary))
+export default withApollo(RatingSummary)
