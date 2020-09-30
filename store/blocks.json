@@ -1,10 +1,5 @@
 {
   "store.product-review-form": {
     "blocks": ["product-review-form.power-reviews"]
-  },
-  "store.product": {
-    "blocks": [
-      "product-questions-and-answers"
-    ]
   }
 }
