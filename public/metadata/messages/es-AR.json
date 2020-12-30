@@ -1,0 +1,14 @@
+{
+  "name": "PowerReviews",
+  "headline": "Integre los servicios de PowerReviews y maximice las conversiones y las ventas.",
+  "overview": "Con este app, su tienda podrá integrarse con los servicios de PowerReviews, lo que permite la recopilación de información que ofrece el consumidor sobre los productos y la tienda. También podrá aprovechar la inteligencia que ofrece PowerReviews en el análisis de millones de comentarios para mejorar de manera eficiente la experiencia del comprador.",
+  "features": [
+    "Clasificaciones y revisiones",
+    "Comentarios sobre la experiencia de la tienda",
+    "UGC analytics"
+  ],
+  "websiteURL": "https://vtex.com/",
+  "support": {
+    "url": "https://support.vtex.com/hc/requests"
+  }
+}
