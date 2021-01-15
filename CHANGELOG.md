@@ -7,6 +7,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [1.7.0] - 2020-10-27
+### Added
+- Questions and Answers component.
+
 ## [1.6.0] - 2020-09-08
 ### Added
 - CSS Handles

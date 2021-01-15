@@ -2,6 +2,9 @@
   "product-review-form.power-reviews": {
     "component": "ReviewForm"
   },
+  "product-questions-and-answers.power-reviews": {
+    "component": "QnA"
+  },
   "product-reviews.power-reviews": {
     "component": "Reviews"
   },
