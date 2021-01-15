@@ -12,12 +12,12 @@ const ReviewForm = ({ appSettings }: { appSettings: Settings }) => {
     culture: { locale },
     query,
   } = useRuntime()
-  const { appKey, merchantId, merchantGroupId } = appSettings
+  const { appKey, merchantId, merchantGroupId, reviewFormStyleSheetSrc = '' } = appSettings
 
   const scriptLoaded = usePRScript()
 
   useEffect(() => {
-    if (!window.POWERREVIEWS || scriptLoaded === false) {
+    if (!window.POWERREVIEWS || !scriptLoaded) {
       return
     }
 
@@ -28,6 +28,7 @@ const ReviewForm = ({ appSettings }: { appSettings: Settings }) => {
       merchant_group_id: merchantGroupId,
       merchant_id: merchantId,
       page_id: query.pr_page_id,
+      style_sheet: reviewFormStyleSheetSrc,
       components: {
         Write: 'pr-write',
       },
