@@ -75,6 +75,18 @@
         "default": "linkText",
         "title": "API Unique Id",
         "description": "The Unique Id referencing to the product id to get the reviews"
+      },
+      "reviewFormStyleSheetSrc": {
+        "type": "string",
+        "access": "public",
+        "title": "New Review Form Stylesheet Source",
+        "description": "Enter your stylesheet source for the new review form (http://www.example.com/yourcssfile.css)"
+      },
+      "qnaStyleSheetSrc": {
+        "type": "string",
+        "access": "public",
+        "title": "Q&A Stylesheet Source",
+        "description": "Enter your stylesheet source for the Q&A page (http://www.example.com/yourcssfile.css)"
       }
     }
   },
