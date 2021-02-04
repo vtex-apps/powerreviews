@@ -101,5 +101,12 @@
     "vtex.store-image": "0.x",
     "vtex.css-handles": "0.x"
   },
+  "billingOptions": {
+    "support": {
+      "url": "https://help-tickets.vtex.com/en/support?app=vtex.powerreviews"
+    },
+    "type": "free",
+    "availableCountries": ["*"]
+  },
   "$schema": "https://raw.githubusercontent.com/vtex/node-vtex-api/master/gen/manifest.schema"
 }
