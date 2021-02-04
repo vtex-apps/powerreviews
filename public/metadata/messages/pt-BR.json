@@ -1,0 +1,15 @@
+{
+  "name": "PowerReviews",
+  "headline": "Integração da PowerReviews em sua loja VTEX IO.",
+  "overview": "Integração da PowerReviews trazendo avaliações do produto além de outras funcionalidades para sua loja VTEX IO.",
+  "features": [
+    "Exive a avalição do produto na PDP e Vitrine",
+    "Permite aos usuários lerem e filtrarem avaliação na página de produto",
+    "Permite aos usuários colocarem sua própria avaliação do produto",
+    "Possibilidade de fazer perguntas e respostas sobre o produto"
+  ],
+  "websiteURL": "https://vtex.com/",
+  "support": {
+      "url": "https://help-tickets.vtex.com/en/support?app=vtex.powerreviews"
+    }
+} 
