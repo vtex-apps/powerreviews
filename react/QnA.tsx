@@ -13,12 +13,12 @@ function QnA({ appSettings }: { appSettings: Settings }) {
     culture: { locale },
   } = useRuntime()
   const { product } = useContext(ProductContext)
-  const { appKey, merchantId, merchantGroupId } = appSettings
+  const { appKey, merchantId, merchantGroupId, qnaStyleSheetSrc = '' } = appSettings
 
   const scriptLoaded = usePRScript()
 
   useEffect(() => {
-    if (!window.POWERREVIEWS || scriptLoaded === false) {
+    if (!window.POWERREVIEWS || !scriptLoaded) {
       return
     }
 
@@ -29,6 +29,7 @@ function QnA({ appSettings }: { appSettings: Settings }) {
       merchant_group_id: merchantGroupId,
       merchant_id: merchantId,
       page_id: product[appSettings.uniqueId],
+      style_sheet: qnaStyleSheetSrc,
       components: {
         QuestionDisplay: 'pr-questiondisplay',
       },
