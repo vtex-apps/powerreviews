@@ -9,6 +9,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [1.8.0] - 2021-01-18
 
+### Fixed
+- Duplicate insertion of `power-reviews` script in the DOM
+- Sometimes the Q&A block wasn't being rendered at all
+
 ### Added
 - `reviewFormStyleSheetSrc` & `qnaStyleSheetSrc` appSettings for custom stylesheets for the QnA & ReviewForm components
 
