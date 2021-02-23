@@ -1,0 +1,15 @@
+{
+  "name": "PowerReviews",
+  "headline": "Integre PowerReviews con su tienda VTEX IO.",
+  "overview": "Intégrese a PowerReviews para implementar calificaciones y comentarios de productos y otras funcionalidades en su tienda VTEX IO.",
+  "features": [
+    "Muestre las calificaciones de los productos en las PDP y en los estantes de productos",
+    "Permita a los consumidores leer y filtrar los comentarios en las PDP",
+    "Permita a los consumidores enviar sus calificaciones y comentarios sobre los productos",
+    "Permita a los consumidores formular y responder preguntas sobre los productos"
+  ],
+  "websiteURL": "https://vtex.com/",
+  "support": {
+      "url": "https://help-tickets.vtex.com/en/support?app=vtex.powerreviews"
+    }
+ }
