@@ -3,7 +3,7 @@
   "name": "powerreviews",
   "title": "PowerReviews",
   "description": "The most advanced collection and custom display capabilities delivering relevant and authentic shopping experiences across touch points and channels. More reviews. More trust. More sales.",
-  "version": "1.8.0",
+  "version": "2.0.0",
   "defaultLocale": "pt-BR",
   "builders": {
     "react": "3.x",
@@ -106,7 +106,9 @@
       "url": "https://help-tickets.vtex.com/en/support?app=vtex.powerreviews"
     },
     "type": "free",
-    "availableCountries": ["*"]
+    "availableCountries": [
+      "*"
+    ]
   },
   "$schema": "https://raw.githubusercontent.com/vtex/node-vtex-api/master/gen/manifest.schema"
 }
