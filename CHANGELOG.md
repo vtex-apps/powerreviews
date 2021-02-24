@@ -7,6 +7,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+### Added
+- `reviewMediaAsSlider` prop to wrap the images in a slider if there are more than 3 images in a review
+- Small changes to the design of the review summary  
+
 ## [1.8.0] - 2021-01-18
 
 ### Added
