@@ -13,7 +13,6 @@ import queryRatingSummary from './graphql/queries/queryRatingSummary.gql'
 import voteReviewQuery from './graphql/mutations/voteReview.gql'
 import { withApollo } from 'react-apollo'
 import { FormattedMessage, useIntl, defineMessages } from 'react-intl'
-import { SliderLayout } from 'vtex.slider-layout'
 
 import {
   IconSuccess,
@@ -25,18 +24,6 @@ import {
 import useFeedless from './modules/useFeedless'
 
 const IMAGES_URI_PREFIX = '//images.powerreviews.com'
-const ITEMS_PER_PAGE = {
-  desktop: 3,
-  tablet: 2,
-  phone: 2,
-}
-const INFINITE = true
-const NAVIGATION_STEP = 'page'
-const SHOW_NAVIGATION_ARROWS = 'desktopOnly'
-const SHOW_PAGINATION_DOTS = 'always'
-const USE_PAGINATION = true
-const FULL_WIDTH = false
-const ARROW_SIZE = 25
 
 const CSS_HANDLES = [
   'powerReviewsWrapper',
@@ -260,7 +247,7 @@ const Reviews = props => {
 
   const [state, dispatch] = useReducer(reducer, initialState)
   const { filter, selected, page, count, histogram, average } = state
-  const { reviewMediaAsSlider } = props
+
   const config = props.appSettings ? props.appSettings : {}
 
   useFeedless(config)
@@ -396,18 +383,6 @@ const Reviews = props => {
     )
   }
 
-  const renderImages = (review, widthClassName) =>
-    review.media.map((item, i) => {
-      return (
-        <img
-          alt=""
-          className={`${widthClassName} db mb5`}
-          key={i}
-          src={item.uri}
-        />
-      )
-    })
-
   const formattedOptions = options(formatMessage)
 
   const formattedFilters = filters(formatMessage)
@@ -430,16 +405,6 @@ const Reviews = props => {
           className={`${handles.powerReviewsAverage} review__rating--average dib v-mid`}
         >
           {average}
-        </span>
-        <span
-          className={`${handles.powerReviewsRatingSummaryAverage} review__rating--average ml3 c-muted-2`}
-        >
-          (
-          <FormattedMessage
-            id="store/power-reviews.numberOfReviews"
-            values={{ number: state.count }}
-          />
-          )
         </span>
       </div>
       {state.reviews.length > 0 && (
@@ -703,23 +668,16 @@ const Reviews = props => {
 
                 {review.media.length ? (
                   <div className="review__comment-images mt6">
-                    {reviewMediaAsSlider && review.media.length > 3 ? (
-                      <SliderLayout
-                        totalItems={review.media?.items?.length}
-                        infinite={INFINITE}
-                        itemsPerPage={ITEMS_PER_PAGE}
-                        navigationStep={NAVIGATION_STEP}
-                        showNavigationArrows={SHOW_NAVIGATION_ARROWS}
-                        showPaginationDots={SHOW_PAGINATION_DOTS}
-                        usePagination={USE_PAGINATION}
-                        fullWidth={FULL_WIDTH}
-                        arrowSize={ARROW_SIZE}
-                      >
-                        {renderImages(review, 'w-90')}
-                      </SliderLayout>
-                    ) : (
-                      renderImages(review, 'w-20')
-                    )}
+                    {review.media.map((item, i) => {
+                      return (
+                        <img
+                          alt=""
+                          className="w-20 db mb5"
+                          key={i}
+                          src={item.uri}
+                        />
+                      )
+                    })}
                   </div>
                 ) : null}
               </div>
