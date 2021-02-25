@@ -11,7 +11,18 @@
     "eslint": "^5.16.0",
     "eslint-config-vtex": "^10.1.0",
     "prettier": "^1.18.2",
-    "typescript": "3.9.7"
+    "typescript": "3.9.7",
+    "vtex.css-handles": "http://vtex.vtexassets.com/_v/public/typings/v1/vtex.css-handles@0.4.4/public/@types/vtex.css-handles",
+    "vtex.pixel-interfaces": "http://vtex.vtexassets.com/_v/public/typings/v1/vtex.pixel-interfaces@1.1.1/public/_types/react",
+    "vtex.powerreviews": "https://powerreviews--fstudio.myvtex.com/_v/private/typings/linked/v1/vtex.powerreviews@1.8.0+build1614004715/public/@types/vtex.powerreviews",
+    "vtex.product-context": "http://vtex.vtexassets.com/_v/public/typings/v1/vtex.product-context@0.9.7/public/@types/vtex.product-context",
+    "vtex.product-review-interfaces": "http://vtex.vtexassets.com/_v/public/typings/v1/vtex.product-review-interfaces@1.0.2/public/_types/react",
+    "vtex.product-summary-context": "http://vtex.vtexassets.com/_v/public/typings/v1/vtex.product-summary-context@0.7.0/public/@types/vtex.product-summary-context",
+    "vtex.slider-layout": "http://vtex.vtexassets.com/_v/public/typings/v1/vtex.slider-layout@0.17.0/public/@types/vtex.slider-layout",
+    "vtex.store": "http://vtex.vtexassets.com/_v/public/typings/v1/vtex.store@2.112.0/public/@types/vtex.store",
+    "vtex.store-header": "http://vtex.vtexassets.com/_v/public/typings/v1/vtex.store-header@2.25.7/public/@types/vtex.store-header",
+    "vtex.store-image": "http://vtex.vtexassets.com/_v/public/typings/v1/vtex.store-image@0.9.1/public/@types/vtex.store-image",
+    "vtex.styleguide": "http://vtex.vtexassets.com/_v/public/typings/v1/vtex.styleguide@9.135.3/public/@types/vtex.styleguide"
   },
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"

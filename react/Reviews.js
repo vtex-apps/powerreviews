@@ -387,6 +387,8 @@ const Reviews = props => {
 
   const formattedFilters = filters(formatMessage)
 
+  const reversedHistogram = [...histogram].reverse()
+
   return (
     <div
       className={`${handles.powerReviewsWrapper} review mw8 center ph5`}
@@ -410,20 +412,52 @@ const Reviews = props => {
           <ul className="bg-muted-5 pa7 list">
             {state.percentage.map((percentage, i) => {
               return (
-                <li key={i} className="mv3">
-                  <span className="dib w-10 v-mid">
-                    <FormattedMessage
-                      id="store/power-reviews.stars"
-                      values={{ stars: 5 - i }}
-                    />
-                  </span>
-                  <div className="review__histogram--bar bg-white dib h2 w-90 v-mid">
-                    <div
-                      className="review__histogram--bar-value h2 bg-yellow"
-                      style={{ width: percentage }}
-                    ></div>
-                  </div>
-                </li>
+                <div key={i}>
+                  <li key={i} className="mv3 flex-s items-center-s">
+                    <span
+                      className="dib v-mid mr3-s flex items-end"
+                      style={{ width: '5%' }}
+                    >
+                      <FormattedMessage
+                        id="store/power-reviews.stars"
+                        values={{ stars: 5 - i }}
+                      />{' '}
+                      <svg
+                        className="ml2 dib-ns dn"
+                        style={{
+                          verticalAlign: 'text-bottom',
+                        }}
+                        key={i}
+                        xmlns="http://www.w3.org/2000/svg"
+                        width="20"
+                        height="20"
+                        fill="#fc0"
+                        viewBox="0 0 14.737 14"
+                      >
+                        <path
+                          d="M7.369,11.251,11.923,14,10.714,8.82l4.023-3.485-5.3-.449L7.369,0,5.3,4.885,0,5.335,4.023,8.82,2.815,14Z"
+                          transform="translate(0)"
+                        />
+                      </svg>
+                    </span>
+                    <div className="review__histogram--bar bg-white dib h2 w-90 v-mid br4">
+                      <div
+                        className="review__histogram--bar-value h2 bg-yellow br4"
+                        style={{
+                          width: percentage,
+                          borderTopRightRadius: 0,
+                          borderBottomRightRadius: 0,
+                        }}
+                      />
+                    </div>
+                    <span
+                      className="dib w-10 v-mid ttl tc c-muted-2 w-0-s ml3-s"
+                      style={{ width: '5%' }}
+                    >
+                      ({reversedHistogram[i]})
+                    </span>
+                  </li>
+                </div>
               )
             })}
           </ul>
