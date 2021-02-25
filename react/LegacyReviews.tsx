@@ -4,9 +4,9 @@ import { useRuntime } from 'vtex.render-runtime'
 import { useCssHandles } from 'vtex.css-handles'
 import useShouldRenderComponent from './modules/useShouldRenderComponent'
 
-const CSS_HANDLES = ['powerReviewsQnA'] as const
+const CSS_HANDLES = ['legacyReviewDisplay'] as const
 
-const QnA = ({ appSettings }: { appSettings: Settings }) => {
+const LegacyReviews = ({ appSettings }: { appSettings: Settings }) => {
   const handles = useCssHandles(CSS_HANDLES)
   const [isComponentLoaded, setComponentLoaded] = useState(false)
 
@@ -18,7 +18,7 @@ const QnA = ({ appSettings }: { appSettings: Settings }) => {
     appKey,
     merchantId,
     merchantGroupId,
-    qnaStyleSheetSrc = '',
+    legacyReviewsStyleSheetSrc = '',
   } = appSettings
 
   const shouldRenderComponent = useShouldRenderComponent({
@@ -39,16 +39,19 @@ const QnA = ({ appSettings }: { appSettings: Settings }) => {
         merchant_group_id: merchantGroupId,
         merchant_id: merchantId,
         page_id: product[appSettings.uniqueId],
-        style_sheet: qnaStyleSheetSrc,
+        style_sheet: legacyReviewsStyleSheetSrc,
+        review_wrapper_url: `/new-review?pr_page_id=${
+          product[appSettings.uniqueId]
+        }`,
         components: {
-          QuestionDisplay: 'pr-questiondisplay',
+          ReviewDisplay: 'pr-reviewdisplay',
         },
       })
       setComponentLoaded(true)
     }
   }, [shouldRenderComponent, isComponentLoaded])
 
-  return <div className={handles.powerReviewsQnA} id="pr-questiondisplay" />
+  return <div className={handles.legacyReviewDisplay} id="pr-reviewdisplay" />
 }
 
-export default QnA
+export default LegacyReviews

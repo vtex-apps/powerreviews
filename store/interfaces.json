@@ -14,6 +14,9 @@
   "product-rating-inline.power-reviews": {
     "component": "RatingInline"
   },
+  "product-reviews-legacy.power-reviews": {
+    "component": "LegacyReviews"
+  },
   "pixel.power-reviews": {
     "component": "PurchasePixel"
   }
