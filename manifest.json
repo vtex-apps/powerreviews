@@ -87,6 +87,12 @@
         "access": "public",
         "title": "Q&A Stylesheet Source",
         "description": "Enter your stylesheet source for the Q&A page (http://www.example.com/yourcssfile.css)"
+      },
+      "legacyReviewsStyleSheetSrc": {
+        "type": "string",
+        "access": "public",
+        "title": "Legacy Review Display Stylesheet Source",
+        "description": "Enter your stylesheet source for the Legacy Review Display page (http://www.example.com/yourcssfile.css)"
       }
     }
   },

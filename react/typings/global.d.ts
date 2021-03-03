@@ -15,6 +15,7 @@ interface Settings {
   uniqueId: 'productId' | 'linkText' | 'productReference'
   reviewFormStyleSheetSrc: string
   qnaStyleSheetSrc: string
+  legacyReviewsStyleSheetSrc: string
 }
 
 // Docs: https://help.powerreviews.com/Content/Post%20Purchase%20Email/Checkout%20Beacon.htm
@@ -63,6 +64,7 @@ interface PowerReviewsRenderParams {
   components?: any
   product?: PowerReviewsProduct
   style_sheet?: string
+  review_wrapper_url?: string
 }
 
 interface PowerReviewsProduct {
