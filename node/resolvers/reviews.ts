@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/camelcase */
 import axios from 'axios'
 import { Apps } from '@vtex/api'
 
@@ -23,6 +24,9 @@ export const queries = {
     const { sort, page, pageId, filter } = args
 
     const { appKey, merchantId, uniqueId } = await getConfig(ctx)
+
+    if (!appKey || !merchantId || !uniqueId)
+      return { results: [{ reviews: [], rollup: null }] }
 
     const product = JSON.parse(pageId)
 

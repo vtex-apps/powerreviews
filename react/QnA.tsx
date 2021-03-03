@@ -46,7 +46,17 @@ const QnA = ({ appSettings }: { appSettings: Settings }) => {
       })
       setComponentLoaded(true)
     }
-  }, [shouldRenderComponent, isComponentLoaded])
+  }, [
+    shouldRenderComponent,
+    isComponentLoaded,
+    appKey,
+    locale,
+    merchantGroupId,
+    merchantId,
+    product,
+    appSettings.uniqueId,
+    qnaStyleSheetSrc,
+  ])
 
   return <div className={handles.powerReviewsQnA} id="pr-questiondisplay" />
 }

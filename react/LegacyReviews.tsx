@@ -49,7 +49,17 @@ const LegacyReviews = ({ appSettings }: { appSettings: Settings }) => {
       })
       setComponentLoaded(true)
     }
-  }, [shouldRenderComponent, isComponentLoaded])
+  }, [
+    shouldRenderComponent,
+    isComponentLoaded,
+    appKey,
+    locale,
+    merchantGroupId,
+    merchantId,
+    product,
+    appSettings.uniqueId,
+    legacyReviewsStyleSheetSrc,
+  ])
 
   return <div className={handles.legacyReviewDisplay} id="pr-reviewdisplay" />
 }

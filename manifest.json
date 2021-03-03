@@ -76,6 +76,13 @@
         "title": "API Unique Id",
         "description": "The Unique Id referencing to the product id to get the reviews"
       },
+      "useLegacyReviews": {
+        "type": "boolean",
+        "access": "public",
+        "title": "Use Legacy Review Display Component",
+        "default": false,
+        "description": "Enable to use the Legacy Review Display component provided by the PowerReviews SDK, disable to use the VTEX Review Display component"
+      },
       "reviewFormStyleSheetSrc": {
         "type": "string",
         "access": "public",
