@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/camelcase */
 import { canUseDOM } from 'vtex.render-runtime'
 import { PixelMessage } from './typings/events'
 
@@ -9,13 +10,14 @@ function loadScript() {
       const element = document.createElement('script')
       element.type = 'text/javascript'
       element.onload = () => {
-        resolve()
+        resolve({})
       }
       element.onerror = () => {
         reject()
       }
       element.src = '//static.powerreviews.com/t/v1/tracker.js'
       const parent = document.getElementsByTagName('script')[0]
+      // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
       parent.parentNode!.insertBefore(element, parent)
     })
   }

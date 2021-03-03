@@ -7,67 +7,94 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+### Fixed
+
+- Legacy reviews component available through app setting rather than separate interface
+
 ## [2.1.0] - 2021-03-03
 
 ### Added
+
 - Legacy reviews display store block
 
 ### Fixed
+
 - Duplicate insertion of `power-reviews` script in the DOM
 - Sometimes the Q&A block wasn't being rendered at all
 
 ## [2.0.0] - 2021-02-23
 
 ### Added
+
 - Billing options
 - App Store metadata
 
 ## [1.8.0] - 2021-01-18
 
 ### Added
+
 - `reviewFormStyleSheetSrc` & `qnaStyleSheetSrc` appSettings for custom stylesheets for the QnA & ReviewForm components
 
 ## [1.7.0] - 2020-10-27
+
 ### Added
+
 - Questions and Answers component.
 
 ## [1.6.0] - 2020-09-08
+
 ### Added
+
 - CSS Handles
 
 ### Changed
+
 - Use app settings instead of fetching them via GraphQL.
 
 ## [1.5.0] - 2020-09-02
+
 ### Added
+
 - Internationalization.
 
 ## [1.4.4] - 2020-08-19
+
 ### Fixed
+
 - Get reviews from locale.
 
 ## [1.4.3] - 2019-11-07
+
 ### Fixed
+
 - Fix infinite loop on data-fetching.
 
 ## [1.4.2] - 2019-11-05
 
 ## [1.4.1] - 2019-10-31
+
 ### Changed
+
 - Make Reviews query not be ssr.
 
 ## [1.4.0] - 2019-10-11
+
 ### Added
+
 - `reviewed at` badge
 
 ## [1.3.2] - 2019-10-04
+
 ### Fixed
+
 - Fixes error on useFeedless if product is not loaded yet/doesn't exist.
 
 ## [1.3.1] - 2019-09-25
 
 ## [1.3.0] - 2019-08-26
+
 ### Added
+
 - Feedless integration
 
 ## [1.2.2] - 2019-07-30

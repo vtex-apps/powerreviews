@@ -8,6 +8,7 @@ import React, {
 import { ProductContext } from 'vtex.product-context'
 import { Image } from 'vtex.store-image'
 import { useCssHandles } from 'vtex.css-handles'
+import LegacyReviews from './LegacyReviews'
 import Stars from './components/Stars'
 import queryRatingSummary from './graphql/queries/queryRatingSummary.gql'
 import voteReviewQuery from './graphql/mutations/voteReview.gql'
@@ -236,6 +237,16 @@ const reducer = (state, action) => {
       }
     }
   }
+}
+
+const ReviewsContainer = props => {
+  const config = props.appSettings ? props.appSettings : {}
+
+  if (config.useLegacyReviews) {
+    return <LegacyReviews {...props} />
+  }
+
+  return <Reviews {...props} />
 }
 
 const Reviews = props => {
@@ -672,4 +683,4 @@ const Reviews = props => {
   )
 }
 
-export default withApollo(Reviews)
+export default withApollo(ReviewsContainer)

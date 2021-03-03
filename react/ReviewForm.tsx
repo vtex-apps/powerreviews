@@ -12,7 +12,12 @@ const ReviewForm = ({ appSettings }: { appSettings: Settings }) => {
     culture: { locale },
     query,
   } = useRuntime()
-  const { appKey, merchantId, merchantGroupId, reviewFormStyleSheetSrc = '' } = appSettings
+  const {
+    appKey,
+    merchantId,
+    merchantGroupId,
+    reviewFormStyleSheetSrc = '',
+  } = appSettings
 
   const scriptLoaded = usePRScript()
 
@@ -40,6 +45,7 @@ const ReviewForm = ({ appSettings }: { appSettings: Settings }) => {
     merchantGroupId,
     merchantId,
     query.pr_page_id,
+    reviewFormStyleSheetSrc,
   ])
 
   return <div className={handles.powerReviewsForm} id="pr-write" />
