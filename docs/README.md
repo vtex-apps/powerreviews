@@ -10,6 +10,8 @@ The PowerReviews app provides a way to bring your PowerReviews content into your
 
 ## Configuration
 
+Before you can start using the app, you will need an existing [PowerReviews](https://www.powerreviews.com/) account and API key.
+
 ### Step 1 - Defining the app settings
 
 In your VTEX account's admin, perform the following actions:
